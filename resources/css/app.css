@@ -1,0 +1,75 @@
+@import 'tailwindcss';
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+@theme {
+    --font-sans: 'Open Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-serif: 'Merriweather', serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --color-kej-navy: #0c2d5e;
+    --color-kej-navy-2: #123a75;
+    --color-kej-navy-dark: #081f42;
+    --color-kej-gold: #f5b200;
+    --color-kej-gold-dark: #c98e00;
+    --color-kej-gold-soft: #ffd862;
+    --color-kej-red: #b61e25;
+    --color-kej-red-dark: #7d1318;
+    --color-kej-white: #ffffff;
+    --color-kej-cream: #fdf8ec;
+    --color-kej-ink: #1a2332;
+    --color-kej-muted: #5b6776;
+    --color-kej-border: #d9dfe8;
+    --color-kej-bg: #f3f5f9;
+    --color-kej-green: #1a6e30;
+    --color-kej-green-light: #22863a;
+
+    --shadow-sm: 0 1px 3px rgba(12,45,94,0.08);
+    --shadow-md: 0 4px 16px rgba(12,45,94,0.1);
+    --shadow-lg: 0 20px 50px -15px rgba(12,45,94,0.25);
+
+    @keyframes ticker-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+    }
+    @keyframes scan {
+        0%, 100% { top: 5%; }
+        50% { top: 90%; }
+    }
+    @keyframes blink {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0.3; }
+    }
+}
+
+@layer base {
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        @apply bg-white text-kej-ink antialiased overflow-x-hidden;
+        font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    }
+}
+
+@layer utilities {
+    .animate-ticker {
+        animation: ticker-scroll 55s linear infinite;
+    }
+    .animate-scan {
+        animation: scan 2s ease-in-out infinite;
+    }
+    .animate-blink {
+        animation: blink 1.2s infinite;
+    }
+    .glass-navy {
+        @apply bg-kej-navy/90 backdrop-blur-md border border-white/10;
+    }
+    .glass-white {
+        @apply bg-white/80 backdrop-blur-lg border border-white/20;
+    }
+}
