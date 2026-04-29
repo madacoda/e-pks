@@ -76,14 +76,23 @@ jobs:
             # 3. Pull image terbaru yang baru saja di-build oleh GitHub Actions
             docker pull ghcr.io/${{ github.repository }}:latest
             
-            # 4. Restart container dengan image baru (Zero Downtime)
+            # 4. Copy public directory to host so host NGINX can serve CSS/JS/Images
+            mkdir -p /var/www/e-pks/public
+            docker create --name temp_app ghcr.io/${{ github.repository }}:latest
+            docker cp temp_app:/var/www/e-pks/public/. /var/www/e-pks/public/
+            docker rm temp_app
+            
+            # 5. Pastikan .env ada agar Docker tidak membuat folder bernama .env
+            touch /var/www/e-pks/.env
+            
+            # 6. Restart container dengan image baru (Zero Downtime)
+            export GITHUB_REPOSITORY=${{ github.repository }}
             docker compose -f docker-compose.prod.yml up -d
             
-            # 5. Bersihkan image Docker lama agar VPS tidak penuh
+            # 7. Bersihkan image Docker lama agar VPS tidak penuh
             docker image prune -f
             
-            # 6. Eksekusi optimasi framework & migrasi di dalam container yang sedang berjalan
-            docker exec e_pks_app composer install --optimize-autoloader --no-dev
+            # 8. Eksekusi optimasi framework & migrasi di dalam container yang sedang berjalan
             docker exec e_pks_app php artisan optimize:clear
             docker exec e_pks_app php artisan optimize
             docker exec e_pks_app php artisan migrate --force

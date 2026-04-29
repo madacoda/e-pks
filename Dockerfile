@@ -28,6 +28,12 @@ WORKDIR /var/www/e-pks
 # Copy existing application directory contents
 COPY . /var/www/e-pks
 
+# Install PHP dependencies
+RUN composer install --no-dev --optimize-autoloader
+
+# Install Node dependencies and build assets
+RUN npm install && npm run build
+
 # Copy existing application directory permissions
 RUN chown -R www-data:www-data /var/www/e-pks
 

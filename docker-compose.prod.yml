@@ -7,9 +7,8 @@ services:
     ports:
       - "9001:9000"
     volumes:
-      - ./:/var/www/e-pks
-      # Do not map local vendor or node_modules to avoid overriding container ones in production if built locally, 
-      # but for a simple vps deploy, mapping . is common if building on the server.
+      - ./.env:/var/www/e-pks/.env
+      - e_pks_storage:/var/www/e-pks/storage
     networks:
       - e_pks_network
     depends_on:
@@ -34,3 +33,4 @@ networks:
 
 volumes:
   e_pks_db_data:
+  e_pks_storage:
