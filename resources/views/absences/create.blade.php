@@ -102,6 +102,21 @@
     imageInput.addEventListener('change', function() {
         const file = this.files[0];
         if (file) {
+            // Validation: Type
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg', 'image/webp'];
+            if (!validTypes.includes(file.type)) {
+                alert('Tipe file tidak valid. Gunakan format JPEG, PNG, atau WebP.');
+                this.value = '';
+                return;
+            }
+
+            // Validation: Size (5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Ukuran gambar terlalu besar. Maksimal 5MB.');
+                this.value = '';
+                return;
+            }
+
             const reader = new FileReader();
             reader.onload = function(e) {
                 photoPreview.src = e.target.result;

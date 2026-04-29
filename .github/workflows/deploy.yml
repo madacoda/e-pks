@@ -82,8 +82,11 @@ jobs:
             docker cp temp_app:/var/www/e-pks/public/. /var/www/e-pks/public/
             docker rm temp_app
             
-            # 5. Pastikan .env ada agar Docker tidak membuat folder bernama .env
+            # 5. Pastikan .env dan folder storage ada agar Docker tidak membuat sebagai root
             touch /var/www/e-pks/.env
+            mkdir -p /var/www/e-pks/storage/app/public
+            mkdir -p /var/www/e-pks/storage/logs
+            chmod -R 775 /var/www/e-pks/storage
             
             # 6. Restart container dengan image baru (Zero Downtime)
             export GITHUB_REPOSITORY=${{ github.repository }}
@@ -95,4 +98,5 @@ jobs:
             # 8. Eksekusi optimasi framework & migrasi di dalam container yang sedang berjalan
             docker exec e_pks_app php artisan optimize:clear
             docker exec e_pks_app php artisan optimize
+            docker exec e_pks_app php artisan storage:link --force
             docker exec e_pks_app php artisan migrate --force

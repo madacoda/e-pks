@@ -8,29 +8,11 @@ services:
       - "9001:9000"
     volumes:
       - ./.env:/var/www/e-pks/.env
-      - e_pks_storage:/var/www/e-pks/storage
-    networks:
-      - e_pks_network
-    depends_on:
-      - db
-
-  db:
-    image: postgres:18-alpine
-    container_name: e_pks_db
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: ${DB_DATABASE:-e_pks_db}
-      POSTGRES_USER: ${DB_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
-    volumes:
-      - e_pks_db_data:/var/lib/postgresql/data
+      - ./storage/app/public:/var/www/e-pks/storage/app/public
+      - ./storage/logs:/var/www/e-pks/storage/logs
     networks:
       - e_pks_network
 
 networks:
   e_pks_network:
     driver: bridge
-
-volumes:
-  e_pks_db_data:
-  e_pks_storage:

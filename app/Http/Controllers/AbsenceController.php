@@ -5,13 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Absence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 
 class AbsenceController extends Controller
 {
     public function index()
     {
         $absences = Auth::user()->absences()->latest()->get();
+
         return view('absences.index', compact('absences'));
     }
 
@@ -23,7 +23,7 @@ class AbsenceController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'image' => 'required|image|max:5120', // 5MB max
+            'image' => 'required|image|mimes:jpeg,png,jpg,webp|max:5120', // 5MB max
             'latitude' => 'required|numeric',
             'longitude' => 'required|numeric',
             'location_name' => 'nullable|string',
