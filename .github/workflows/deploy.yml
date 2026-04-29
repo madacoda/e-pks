@@ -45,6 +45,19 @@ jobs:
     needs: build-and-push-image
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Copy docker-compose and configs
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USERNAME }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
+          source: "docker-compose.prod.yml,docker/nginx/default.conf"
+          target: "/var/www/e-pks"
+
       - name: Execute deployment commands via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -53,25 +66,23 @@ jobs:
           key: ${{ secrets.VPS_SSH_KEY }}
           passphrase: ${{ secrets.VPS_SSH_PASSPHRASE }}
           script: |
-            # 1. Masuk ke folder proyek di VPS
+            # 1. Buat folder proyek di VPS jika belum ada
+            mkdir -p /var/www/e-pks
             cd /var/www/e-pks
             
             # 2. Login ke GHCR di dalam VPS (untuk akses pull image private)
             echo "${{ secrets.CR_PAT }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
             
-            # 3. Download/Pull kode docker-compose.prod.yml & konfigurasi NGINX terbaru
-            git pull origin main
-            
-            # 4. Pull image terbaru yang baru saja di-build oleh GitHub Actions
+            # 3. Pull image terbaru yang baru saja di-build oleh GitHub Actions
             docker pull ghcr.io/${{ github.repository }}:latest
             
-            # 5. Restart container dengan image baru (Zero Downtime)
-            docker-compose -f docker-compose.prod.yml up -d
+            # 4. Restart container dengan image baru (Zero Downtime)
+            docker compose -f docker-compose.prod.yml up -d
             
-            # 6. Bersihkan image Docker lama agar VPS tidak penuh
+            # 5. Bersihkan image Docker lama agar VPS tidak penuh
             docker image prune -f
             
-            # 7. Eksekusi optimasi framework & migrasi di dalam container yang sedang berjalan
+            # 6. Eksekusi optimasi framework & migrasi di dalam container yang sedang berjalan
             docker exec e_pks_app composer install --optimize-autoloader --no-dev
             docker exec e_pks_app php artisan optimize:clear
             docker exec e_pks_app php artisan optimize
