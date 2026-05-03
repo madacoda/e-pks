@@ -1,0 +1,17 @@
+services:
+    db:
+        image: postgres:16-alpine
+        container_name: e_pks_db
+        restart: unless-stopped
+        environment:
+            POSTGRES_DB: ${DB_DATABASE}
+            POSTGRES_USER: ${DB_USERNAME}
+            POSTGRES_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - "5432:5432"
+        volumes:
+            - e_pks_db_data:/var/lib/postgresql/data
+
+volumes:
+    e_pks_db_data:
+        driver: local

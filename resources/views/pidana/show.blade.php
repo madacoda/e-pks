@@ -37,6 +37,14 @@
                                 <span class="font-bold text-kej-navy">{{ $user->crime ?? '-' }}</span>
                             </div>
                             <div>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Satker</span>
+                                <span class="font-bold text-kej-navy">{{ $user->placement ?? 'Belum Ditentukan' }}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Hukuman</span>
+                                <span class="font-bold text-kej-navy">{{ $user->sentence ?? '-' }}</span>
+                            </div>
+                            <div>
                                 <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Tanggal Lahir</span>
                                 <span class="font-bold text-kej-navy">{{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('d F Y') : '-' }}</span>
                             </div>
@@ -72,33 +80,21 @@
                 </div>
             </div>
 
-            <div class="lg:col-span-2 space-y-4">
-                @forelse($absences as $absence)
-                <div class="bg-white border border-kej-border rounded-2xl p-5 shadow-sm flex items-center gap-6">
-                    <div class="w-20 h-20 bg-kej-bg rounded-xl overflow-hidden shrink-0 border border-kej-border">
-                        <img src="{{ Storage::url($absence->image_path) }}" alt="Selfie" class="w-full h-full object-cover">
+            <div class="lg:col-span-2 space-y-6">
+                <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm" x-data>
+                    <div class="px-6 py-4 border-b border-kej-border bg-kej-bg/30">
+                        <h3 class="font-serif font-black text-kej-navy text-sm uppercase tracking-wider">Aktivitas Terbaru</h3>
                     </div>
-                    <div class="flex-1">
-                        <div class="flex justify-between items-start mb-2">
-                            <div>
-                                <div class="text-[10px] font-bold text-kej-muted uppercase tracking-widest mb-0.5">{{ $absence->created_at->format('d F Y') }}</div>
-                                <h4 class="font-bold text-kej-navy">{{ $absence->location_name ?? 'Lokasi Kerja' }}</h4>
+                    <div class="divide-y divide-kej-border">
+                        @forelse($absences as $absence)
+                            @include('partials.absence-card', ['absence' => $absence])
+                        @empty
+                            <div class="p-16 text-center text-kej-muted italic text-sm">
+                                Belum ada riwayat aktivitas yang tercatat.
                             </div>
-                            <span class="text-[9px] font-black bg-kej-bg px-2 py-1 rounded border border-kej-border text-kej-muted uppercase tracking-widest">{{ $absence->created_at->format('H:i') }} WIB</span>
-                        </div>
-                        <div class="flex items-center gap-4">
-                            <a href="https://www.google.com/maps?q={{ $absence->latitude }},{{ $absence->longitude }}" target="_blank" class="text-[11px] font-bold text-kej-green flex items-center gap-1.5 hover:underline">
-                                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-                                VALIDASI GPS OK
-                            </a>
-                        </div>
+                        @endforelse
                     </div>
                 </div>
-                @empty
-                <div class="bg-white border border-kej-border rounded-2xl p-10 text-center">
-                    <p class="text-sm font-bold text-kej-muted">Belum ada riwayat aktivitas yang tercatat untuk periode ini.</p>
-                </div>
-                @endforelse
             </div>
         </div>
     </div>

@@ -104,23 +104,48 @@
                                     </div>
                                 </div>
 
-                                @if(Auth::user()->crime)
-                                    <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-kej-bg transition-colors">
-                                        <div
-                                            class="w-10 h-10 bg-white border border-kej-border/50 rounded-lg grid place-items-center text-kej-muted shadow-sm">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2">
-                                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                                            </svg>
-                                        </div>
-                                        <div class="flex-1 min-w-0">
-                                            <span
-                                                class="block text-[10px] text-kej-muted font-bold uppercase tracking-wider leading-none mb-1">Klasifikasi
-                                                Perkara</span>
-                                            <span
-                                                class="block font-semibold text-kej-ink leading-snug">{{ Auth::user()->crime }}</span>
-                                        </div>
+                                @if(Auth::user()->placement)
+                                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-kej-bg transition-colors">
+                                    <div class="w-10 h-10 bg-white border border-kej-border/50 rounded-lg grid place-items-center text-kej-muted shadow-sm">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                        </svg>
                                     </div>
+                                    <div class="flex-1 min-w-0">
+                                        <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-wider leading-none mb-1">Satker</span>
+                                        <span class="block font-semibold text-kej-ink truncate">{{ Auth::user()->placement }}</span>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if(Auth::user()->sentence)
+                                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-kej-bg transition-colors">
+                                    <div class="w-10 h-10 bg-white border border-kej-border/50 rounded-lg grid place-items-center text-kej-muted shadow-sm">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                            <polyline points="14 2 14 8 20 8" />
+                                            <line x1="16" y1="13" x2="8" y2="13" /><line x1="16" y1="17" x2="8" y2="17" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-wider leading-none mb-1">Hukuman</span>
+                                        <span class="block font-semibold text-kej-ink truncate">{{ Auth::user()->sentence }}</span>
+                                    </div>
+                                </div>
+                                @endif
+
+                                @if(Auth::user()->crime)
+                                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-kej-bg transition-colors">
+                                    <div class="w-10 h-10 bg-white border border-kej-border/50 rounded-lg grid place-items-center text-kej-muted shadow-sm">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                        </svg>
+                                    </div>
+                                    <div class="flex-1 min-w-0">
+                                        <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-wider leading-none mb-1">Perkara</span>
+                                        <span class="block font-semibold text-kej-ink truncate">{{ Auth::user()->crime }}</span>
+                                    </div>
+                                </div>
                                 @endif
                             </div>
                         </div>
@@ -167,35 +192,15 @@
                     </div>
 
                     <!-- Recent Activity -->
-                    <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm">
+                    <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm" x-data>
                         <div class="px-6 py-4 border-b border-kej-border bg-kej-bg/30 flex justify-between items-center">
-                            <h3 class="font-serif font-black text-kej-navy text-sm uppercase tracking-wider">Aktivitas
-                                Terbaru</h3>
+                            <h3 class="font-serif font-black text-kej-navy text-sm uppercase tracking-wider">Aktivitas Terbaru</h3>
                             <a href="{{ route('absences.index') }}"
                                 class="text-[11px] font-bold text-kej-green hover:underline">LIHAT SEMUA</a>
                         </div>
                         <div class="divide-y divide-kej-border">
                             @forelse($recentAbsences as $absence)
-                                <div class="p-4 flex items-center gap-4 hover:bg-kej-bg/20 transition-colors">
-                                    <div class="w-12 h-12 rounded-lg overflow-hidden shrink-0 border border-kej-border">
-                                        <img src="{{ Storage::disk('public')->url($absence->image_path) }}"
-                                            class="w-full h-full object-cover" alt="Selfie">
-                                    </div>
-                                    <div class="flex-1 min-w-0">
-                                        <div class="flex justify-between items-start">
-                                            <h4 class="font-bold text-kej-ink text-sm truncate">
-                                                {{ $absence->location_name ?? 'Lokasi Terverifikasi' }}
-                                            </h4>
-                                            <span
-                                                class="text-[10px] font-bold text-kej-muted whitespace-nowrap">{{ $absence->created_at->diffForHumans() }}</span>
-                                        </div>
-                                        <div class="flex items-center gap-2 mt-1">
-                                            <span class="w-2 h-2 rounded-full bg-kej-green"></span>
-                                            <span class="text-[11px] text-kej-muted">Presensi Berhasil —
-                                                {{ $absence->created_at->format('H:i') }} WIB</span>
-                                        </div>
-                                    </div>
-                                </div>
+                                @include('partials.absence-card', ['absence' => $absence])
                             @empty
                                 <div class="p-10 text-center text-kej-muted italic text-sm">
                                     Belum ada aktivitas presensi terbaru.

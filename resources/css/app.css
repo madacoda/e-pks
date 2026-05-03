@@ -57,6 +57,8 @@
 }
 
 @layer utilities {
+    [x-cloak] { display: none !important; }
+
     .animate-ticker {
         animation: ticker-scroll 55s linear infinite;
     }

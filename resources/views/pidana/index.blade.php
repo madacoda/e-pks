@@ -37,9 +37,9 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 @forelse($pidanas as $pidana)
                     <div
-                        class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group animate-fade-in">
+                        class="flex flex-col h-full bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm hover:shadow-2xl hover:-translate-y-2 transition-all duration-500 group animate-fade-in">
                         <div class="h-1.5 bg-kej-navy group-hover:bg-kej-green transition-colors"></div>
-                        <div class="p-8">
+                        <div class="p-8 flex-1 flex flex-col">
                             <div class="flex gap-5 mb-8">
                                 <div class="relative">
                                     <div
@@ -65,8 +65,8 @@
                                 </div>
                             </div>
 
-                            <div class="space-y-4 mb-8">
-                                <div class="bg-kej-bg/50 rounded-xl p-4 border border-kej-border/50">
+                            <div class="space-y-4 mb-8 flex-1">
+                                <div class="bg-kej-bg/50 rounded-xl p-4 border border-kej-border/50 h-full flex flex-col">
                                     <div class="flex justify-between items-center text-[12px] mb-3">
                                         <span class="text-kej-muted font-bold uppercase tracking-wider">Perkara</span>
                                         <span
@@ -74,7 +74,10 @@
                                     </div>
                                     <div class="flex justify-between items-center text-[12px]">
                                         <span class="text-kej-muted font-bold uppercase tracking-wider">Satker</span>
-                                        <span class="text-kej-navy font-black">KEJARI JAKSEL</span>
+                                        <span class="text-kej-navy font-black text-right">{{ $pidana->placement ?? 'Tidak Diketahui' }}</span>
+                                    </div>
+                                    <div class="flex-1 flex flex-col justify-center items-center text-[12px] mt-3">
+                                        <span class="text-kej-navy font-bold text-center">{{ $pidana->sentence ?? 'Kerja Sosial' }}</span>
                                     </div>
                                 </div>
                             </div>
