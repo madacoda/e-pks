@@ -50,10 +50,30 @@
                     </div>
                 </div>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="crime" class="block text-xs font-bold text-kej-navy uppercase tracking-widest mb-2">Perkara / Kejahatan</label>
+                        <textarea id="crime" name="crime" rows="2"
+                            class="w-full px-4 py-3 bg-kej-bg border border-kej-border rounded-xl text-sm focus:outline-none focus:border-kej-green transition-all font-semibold">{{ old('crime', $user->crime) }}</textarea>
+                    </div>
+                    <div>
+                        <label for="sentence" class="block text-xs font-bold text-kej-navy uppercase tracking-widest mb-2">Masa Hukuman (Vonis)</label>
+                        <textarea id="sentence" name="sentence" rows="2"
+                            class="w-full px-4 py-3 bg-kej-bg border border-kej-border rounded-xl text-sm focus:outline-none focus:border-kej-green transition-all font-semibold">{{ old('sentence', $user->sentence) }}</textarea>
+                    </div>
+                </div>
+
                 <div>
-                    <label for="crime" class="block text-xs font-bold text-kej-navy uppercase tracking-widest mb-2">Perkara / Kejahatan</label>
-                    <textarea id="crime" name="crime" rows="3"
-                        class="w-full px-4 py-3 bg-kej-bg border border-kej-border rounded-xl text-sm focus:outline-none focus:border-kej-green transition-all font-semibold">{{ old('crime', $user->crime) }}</textarea>
+                    <label for="placement_id" class="block text-xs font-bold text-kej-navy uppercase tracking-widest mb-2">Lokasi Penempatan</label>
+                    <select id="placement_id" name="placement_id"
+                        class="w-full px-4 py-3 bg-kej-bg border border-kej-border rounded-xl text-sm focus:outline-none focus:border-kej-green transition-all font-semibold appearance-none">
+                        <option value="">-- Pilih Lokasi Penempatan --</option>
+                        @foreach($placements as $placement)
+                            <option value="{{ $placement->id }}" {{ old('placement_id', $user->placement_id) == $placement->id ? 'selected' : '' }}>
+                                {{ $placement->name }}
+                            </option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="pt-6 border-t border-kej-border flex flex-col sm:flex-row justify-end gap-4">

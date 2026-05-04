@@ -16,11 +16,18 @@
                         memantau progres pelaksanaan pidana kerja sosial di seluruh Satker Kejaksaan RI.</p>
                 </div>
 
-                <div class="w-full md:w-auto">
-                    <form action="" method="GET" class="relative group flex items-center">
-                        <div class="relative flex-1">
+                    <form action="" method="GET" class="relative group flex flex-col md:flex-row gap-3 items-center w-full">
+                        <select name="placement_id" onchange="this.form.submit()" class="w-full md:w-auto px-4 py-4 bg-white border-2 border-kej-border rounded-2xl text-sm font-bold text-kej-navy focus:outline-none focus:border-kej-green transition-all shadow-sm appearance-none">
+                            <option value="">Semua Lokasi Penempatan</option>
+                            @foreach($placements as $placement)
+                                <option value="{{ $placement->id }}" {{ request('placement_id') == $placement->id ? 'selected' : '' }}>
+                                    {{ $placement->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <div class="relative flex-1 w-full">
                             <input type="text" name="search" value="{{ request('search') }}" placeholder="Cari Nama Terpidana..."
-                                class="w-full md:w-[380px] bg-white border-2 border-kej-border rounded-2xl pl-12 pr-24 py-4 text-sm font-bold text-kej-navy placeholder:text-kej-muted/60 focus:outline-none focus:ring-4 focus:ring-kej-green/10 focus:border-kej-green transition-all shadow-sm group-hover:shadow-md">
+                                class="w-full bg-white border-2 border-kej-border rounded-2xl pl-12 pr-24 py-4 text-sm font-bold text-kej-navy placeholder:text-kej-muted/60 focus:outline-none focus:ring-4 focus:ring-kej-green/10 focus:border-kej-green transition-all shadow-sm group-hover:shadow-md">
                             <svg class="absolute left-4 top-1/2 -translate-y-1/2 text-kej-muted group-focus-within:text-kej-green transition-colors"
                                 width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
                                 <circle cx="11" cy="11" r="8" />
@@ -31,7 +38,6 @@
                             </button>
                         </div>
                     </form>
-                </div>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
@@ -74,7 +80,7 @@
                                     </div>
                                     <div class="flex justify-between items-center text-[12px]">
                                         <span class="text-kej-muted font-bold uppercase tracking-wider">Satker</span>
-                                        <span class="text-kej-navy font-black text-right">{{ $pidana->placement ?? 'Tidak Diketahui' }}</span>
+                                        <span class="text-kej-navy font-black text-right">{{ $pidana->placement->name ?? 'Tidak Diketahui' }}</span>
                                     </div>
                                     <div class="flex-1 flex flex-col justify-center items-center text-[12px] mt-3">
                                         <span class="text-kej-navy font-bold text-center">{{ $pidana->sentence ?? 'Kerja Sosial' }}</span>
@@ -90,9 +96,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="px-8 pb-8">
+                        <div class="px-8 pb-8 flex gap-3">
                             <a href="{{ route('pidana.show', $pidana->id) }}"
-                                class="group/btn relative block w-full bg-kej-navy py-4 rounded-xl text-[11px] font-black text-white text-center uppercase tracking-[0.2em] overflow-hidden transition-all hover:bg-kej-green shadow-lg">
+                                class="group/btn relative flex-1 block w-full bg-kej-navy py-4 rounded-xl text-[11px] font-black text-white text-center uppercase tracking-[0.2em] overflow-hidden transition-all hover:bg-kej-green shadow-lg">
                                 <span class="relative z-10 flex items-center justify-center gap-2">
                                     Aktivitas Digital
                                     <svg class="group-hover/btn:translate-x-1 transition-transform" width="14" height="14"
@@ -102,6 +108,17 @@
                                     </svg>
                                 </span>
                             </a>
+                            
+                            @if(auth()->check() && auth()->user()->role === 'admin')
+                                <a href="{{ route('admin.edit', $pidana->id) }}" 
+                                    class="flex items-center justify-center px-5 bg-white border-2 border-kej-navy text-kej-navy rounded-xl hover:bg-kej-navy hover:text-white transition-all shadow-sm"
+                                    title="Edit Profil">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                </a>
+                            @endif
                         </div>
                     </div>
                 @empty

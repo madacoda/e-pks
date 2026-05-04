@@ -26,8 +26,15 @@
                                 <h1 class="font-serif text-3xl font-black text-kej-navy mb-1">{{ $user->name }}</h1>
                                 <p class="text-sm font-bold text-kej-green tracking-widest uppercase">TERPIDANA KERJA SOSIAL</p>
                             </div>
-                            <div class="bg-kej-green/10 text-kej-green border border-kej-green/20 px-4 py-2 rounded-xl text-xs font-black tracking-widest uppercase">
-                                STATUS: AKTIF
+                            <div class="flex flex-col sm:flex-row items-end sm:items-center gap-3">
+                                @if(auth()->check() && auth()->user()->role === 'admin')
+                                    <a href="{{ route('admin.edit', $user->id) }}" class="bg-kej-gold/10 text-kej-gold-dark hover:bg-kej-gold hover:text-white border border-kej-gold/50 px-4 py-2 rounded-xl text-xs font-black tracking-widest uppercase transition-colors">
+                                        EDIT PROFIL
+                                    </a>
+                                @endif
+                                <div class="bg-kej-green/10 text-kej-green border border-kej-green/20 px-4 py-2 rounded-xl text-xs font-black tracking-widest uppercase">
+                                    STATUS: AKTIF
+                                </div>
                             </div>
                         </div>
                         
@@ -38,7 +45,7 @@
                             </div>
                             <div>
                                 <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Satker</span>
-                                <span class="font-bold text-kej-navy">{{ $user->placement ?? 'Belum Ditentukan' }}</span>
+                                <span class="font-bold text-kej-navy">{{ $user->placement->name ?? 'Belum Ditentukan' }}</span>
                             </div>
                             <div>
                                 <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Hukuman</span>

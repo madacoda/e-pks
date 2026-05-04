@@ -13,6 +13,10 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        $placement1 = \App\Models\Placement::firstOrCreate(['name' => 'Kejari Jakarta Pusat']);
+        $placement2 = \App\Models\Placement::firstOrCreate(['name' => 'Kejari Bandung']);
+        $placement3 = \App\Models\Placement::firstOrCreate(['name' => 'Kejari Surabaya']);
+
         $users = [
             [
                 'name' => 'John Doe',
@@ -21,7 +25,7 @@ class UserSeeder extends Seeder
                 'role' => 'pidana',
                 'date_of_birth' => '1990-05-15',
                 'crime' => 'Pencurian Ringan (364 KUHP)',
-                'placement' => 'Kejari Jakarta Pusat',
+                'placement_id' => $placement1->id,
                 'sentence' => '180 Hari Kerja Sosial di SMAN 2 Jakarta Selatan',
             ],
             [
@@ -31,7 +35,7 @@ class UserSeeder extends Seeder
                 'role' => 'pidana',
                 'date_of_birth' => '1985-10-20',
                 'crime' => 'Penganiayaan Ringan (352 KUHP)',
-                'placement' => 'Kejari Bandung',
+                'placement_id' => $placement2->id,
                 'sentence' => '90 Hari Kerja Sosial di SD Kristen Bina Kasih Bandung',
             ],
             [
@@ -41,7 +45,7 @@ class UserSeeder extends Seeder
                 'role' => 'pidana',
                 'date_of_birth' => '1995-02-10',
                 'crime' => 'Kerusakan Barang (406 KUHP)',
-                'placement' => 'Kejari Surabaya',
+                'placement_id' => $placement3->id,
                 'sentence' => '360 Hari Kerja Sosial di SMP Negeri 8 Surabaya',
             ],
             [
@@ -51,7 +55,7 @@ class UserSeeder extends Seeder
                 'role' => 'admin',
                 'date_of_birth' => '1980-01-01',
                 'crime' => null,
-                'placement' => null,
+                'placement_id' => null,
                 'sentence' => null,
             ],
         ];

@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'date_of_birth', 'crime', 'avatar', 'placement', 'sentence'])]
+#[Fillable(['name', 'email', 'password', 'role', 'date_of_birth', 'crime', 'avatar', 'placement_id', 'sentence'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -34,5 +34,10 @@ class User extends Authenticatable
     public function absences(): HasMany
     {
         return $this->hasMany(Absence::class);
+    }
+
+    public function placement()
+    {
+        return $this->belongsTo(Placement::class);
     }
 }

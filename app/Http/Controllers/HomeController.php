@@ -15,14 +15,19 @@ class HomeController extends Controller
 
     public function pidanaList(Request $request)
     {
-        $query = User::where('role', 'pidana')->withCount('absences');
+        $query = User::where('role', 'pidana')->withCount('absences')->with('placement');
 
         if ($request->filled('search')) {
             $query->where('name', 'ilike', '%' . $request->search . '%');
         }
 
+        if ($request->filled('placement_id')) {
+            $query->where('placement_id', $request->placement_id);
+        }
+
         $pidanas = $query->get();
-        return view('pidana.index', compact('pidanas'));
+        $placements = \App\Models\Placement::all();
+        return view('pidana.index', compact('pidanas', 'placements'));
     }
 
     public function pidanaShow(User $user)

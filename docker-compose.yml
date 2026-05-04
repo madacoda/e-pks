@@ -1,6 +1,22 @@
 services:
+    app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        container_name: e_pks_app
+        restart: unless-stopped
+        ports:
+            - "8000:8000"
+        volumes:
+            - ./:/var/www/e-pks
+        command: php artisan serve --host=0.0.0.0 --port=8000
+        depends_on:
+            - db
+        networks:
+            - e_pks_network
+
     db:
-        image: postgres:16-alpine
+        image: postgres:18-alpine
         container_name: e_pks_db
         restart: unless-stopped
         environment:
@@ -10,8 +26,14 @@ services:
         ports:
             - "5432:5432"
         volumes:
-            - e_pks_db_data:/var/lib/postgresql/data
+            - e_pks_db_data_18:/var/lib/postgresql
+        networks:
+            - e_pks_network
 
 volumes:
-    e_pks_db_data:
+    e_pks_db_data_18:
         driver: local
+
+networks:
+    e_pks_network:
+        driver: bridge

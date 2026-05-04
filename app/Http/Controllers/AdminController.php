@@ -5,28 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class AdminController extends Controller
+class AdminController extends Controller implements HasMiddleware
 {
-    public function __construct()
+    public static function middleware(): array
     {
-        $this->middleware(function ($request, $next) {
-            if (Auth::user()->role !== 'admin') {
-                abort(403, 'Unauthorized action.');
-            }
-            return $next($request);
-        });
+        return [
+            function ($request, $next) {
+                if (Auth::user()->role !== 'admin') {
+                    abort(403, 'Unauthorized action.');
+                }
+                return $next($request);
+            },
+        ];
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        return view('admin.index', compact('users'));
+        $query = User::with('placement');
+
+        if ($request->filled('placement_id')) {
+            $query->where('placement_id', $request->placement_id);
+        }
+
+        $users = $query->get();
+        $placements = \App\Models\Placement::all();
+        return view('admin.index', compact('users', 'placements'));
     }
 
     public function edit(User $user)
     {
-        return view('admin.edit', compact('user'));
+        $placements = \App\Models\Placement::all();
+        return view('admin.edit', compact('user', 'placements'));
     }
 
     public function update(Request $request, User $user)
@@ -37,6 +48,8 @@ class AdminController extends Controller
             'role' => 'required|in:admin,pidana',
             'date_of_birth' => 'nullable|date',
             'crime' => 'nullable|string|max:255',
+            'sentence' => 'nullable|string|max:255',
+            'placement' => 'nullable|string|max:255',
         ]);
 
         $user->update($request->all());

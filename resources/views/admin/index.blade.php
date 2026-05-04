@@ -60,6 +60,20 @@
             </div>
         </div>
 
+        <!-- Filters -->
+        <div class="mb-6 animate-fade-in">
+            <form action="{{ route('admin.index') }}" method="GET" class="flex items-center gap-4">
+                <select name="placement_id" onchange="this.form.submit()" class="px-4 py-2.5 bg-white border border-kej-border rounded-xl text-sm focus:outline-none focus:border-kej-green transition-all font-semibold appearance-none min-w-[250px] shadow-sm">
+                    <option value="">-- Semua Lokasi Penempatan --</option>
+                    @foreach($placements as $placement)
+                        <option value="{{ $placement->id }}" {{ request('placement_id') == $placement->id ? 'selected' : '' }}>
+                            {{ $placement->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </form>
+        </div>
+
         <!-- Main Database Table -->
         <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm">
             <div class="overflow-x-auto scrollbar-hide">
@@ -112,13 +126,7 @@
                                     <a href="{{ route('admin.edit', $user->id) }}" class="p-2 sm:p-2.5 text-kej-muted hover:text-kej-green hover:bg-kej-green/10 rounded-xl transition-all" title="Edit User">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                     </a>
-                                    <form action="{{ route('admin.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus user ini? Tindakan ini tidak dapat dibatalkan.')">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="p-2 sm:p-2.5 text-kej-muted hover:text-red-600 hover:bg-red-50 rounded-xl transition-all" title="Hapus User">
-                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
-                                        </button>
-                                    </form>
+
                                 </div>
                             </td>
                         </tr>
