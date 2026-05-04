@@ -64,7 +64,7 @@
         <div class="mb-6 animate-fade-in">
             <form action="{{ route('admin.index') }}" method="GET" class="flex items-center gap-4">
                 <select name="placement_id" onchange="this.form.submit()" class="px-4 py-2.5 bg-white border border-kej-border rounded-xl text-sm focus:outline-none focus:border-kej-green transition-all font-semibold appearance-none min-w-[250px] shadow-sm">
-                    <option value="">-- Semua Lokasi Penempatan --</option>
+                    <option value="">-- Semua Satker Yang Menangani --</option>
                     @foreach($placements as $placement)
                         <option value="{{ $placement->id }}" {{ request('placement_id') == $placement->id ? 'selected' : '' }}>
                             {{ $placement->name }}

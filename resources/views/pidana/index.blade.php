@@ -18,7 +18,7 @@
 
                     <form action="" method="GET" class="relative group flex flex-col md:flex-row gap-3 items-center w-full">
                         <select name="placement_id" onchange="this.form.submit()" class="w-full md:w-auto px-4 py-4 bg-white border-2 border-kej-border rounded-2xl text-sm font-bold text-kej-navy focus:outline-none focus:border-kej-green transition-all shadow-sm appearance-none">
-                            <option value="">Semua Lokasi Penempatan</option>
+                            <option value="">Semua Satker Yang Menangani</option>
                             @foreach($placements as $placement)
                                 <option value="{{ $placement->id }}" {{ request('placement_id') == $placement->id ? 'selected' : '' }}>
                                     {{ $placement->name }}

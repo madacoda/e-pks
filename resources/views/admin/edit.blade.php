@@ -64,10 +64,10 @@
                 </div>
 
                 <div>
-                    <label for="placement_id" class="block text-xs font-bold text-kej-navy uppercase tracking-widest mb-2">Lokasi Penempatan</label>
+                    <label for="placement_id" class="block text-xs font-bold text-kej-navy uppercase tracking-widest mb-2">Satker Yang Menangani</label>
                     <select id="placement_id" name="placement_id"
                         class="w-full px-4 py-3 bg-kej-bg border border-kej-border rounded-xl text-sm focus:outline-none focus:border-kej-green transition-all font-semibold appearance-none">
-                        <option value="">-- Pilih Lokasi Penempatan --</option>
+                        <option value="">-- Pilih Satker Yang Menangani --</option>
                         @foreach($placements as $placement)
                             <option value="{{ $placement->id }}" {{ old('placement_id', $user->placement_id) == $placement->id ? 'selected' : '' }}>
                                 {{ $placement->name }}
