@@ -8,8 +8,9 @@
             <!-- Dashboard Header -->
             <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-10">
                 <div class="animate-fade-in">
-                    <div class="text-[10px] sm:text-[11px] font-extrabold text-kej-gold-dark tracking-[0.2em] uppercase mb-1 sm:mb-2">Portal
-                        Terpidana</div>
+                    <div class="text-[10px] sm:text-[11px] font-extrabold text-kej-gold-dark tracking-[0.2em] uppercase mb-1 sm:mb-2">
+                        {{ $isAdmin ? 'Portal Pengawasan' : 'Portal Terpidana' }}
+                    </div>
                     <h1 class="font-serif text-2xl sm:text-3xl font-black text-kej-navy tracking-tight leading-tight">Selamat Datang, <span
                             class="text-kej-green">{{ Auth::user()->name }}</span></h1>
                 </div>
@@ -165,10 +166,12 @@
                                 </svg>
                             </div>
                             <div>
-                                <div class="text-[11px] font-bold text-kej-muted uppercase tracking-widest mb-1">Total Kehadiran</div>
-                                <div class="font-serif text-2xl font-black text-kej-navy leading-none">
-                                    {{ $totalSessions }} <small class="text-xs font-bold text-kej-muted uppercase ml-2 tracking-normal">Hari</small>
-                                </div>
+                            <div class="text-[11px] font-bold text-kej-muted uppercase tracking-widest mb-1">
+                                {{ $isAdmin ? 'Total Presensi Masuk' : 'Total Kehadiran' }}
+                            </div>
+                            <div class="font-serif text-2xl font-black text-kej-navy leading-none">
+                                {{ $totalSessions }} <small class="text-xs font-bold text-kej-muted uppercase ml-2 tracking-normal">Hari</small>
+                            </div>
                                 <a href="{{ route('absences.index') }}"
                                     class="text-[10px] font-bold text-kej-green hover:underline mt-2 inline-block">LIHAT
                                     SEMUA RIWAYAT</a>
@@ -194,7 +197,12 @@
                     <!-- Recent Activity -->
                     <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm" x-data>
                         <div class="px-6 py-4 border-b border-kej-border bg-kej-bg/30 flex justify-between items-center">
-                            <h3 class="font-serif font-black text-kej-navy text-sm uppercase tracking-wider">Aktivitas Terbaru</h3>
+                            <div>
+                                <h3 class="font-serif font-black text-kej-navy text-sm uppercase tracking-wider">Aktivitas Terbaru</h3>
+                                @if($isAdmin)
+                                    <p class="text-[9px] font-bold text-kej-muted uppercase tracking-tight">Menampilkan 5 aktivitas terbaru dari seluruh terpidana</p>
+                                @endif
+                            </div>
                             <a href="{{ route('absences.index') }}"
                                 class="text-[11px] font-bold text-kej-green hover:underline">LIHAT SEMUA</a>
                         </div>
@@ -209,6 +217,7 @@
                         </div>
                     </div>
 
+                    @if(!$isAdmin)
                     <!-- Action Card -->
                     <div
                         class="bg-white border border-kej-border rounded-2xl p-6 sm:p-10 shadow-sm text-center relative overflow-hidden">
@@ -233,6 +242,30 @@
                             </a>
                         </div>
                     </div>
+                    @else
+                    <!-- Admin Quick Stats -->
+                    <div class="grid grid-cols-1 gap-4">
+                        <div class="bg-white border border-kej-border rounded-2xl p-8 shadow-sm">
+                            <h3 class="font-serif text-xl font-black text-kej-navy mb-6">Manajemen Sistem</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <a href="{{ route('admin.index') }}" class="p-5 bg-kej-bg rounded-2xl border border-kej-border hover:border-kej-green transition-all group">
+                                    <div class="w-12 h-12 bg-white rounded-xl shadow-sm grid place-items-center text-kej-navy mb-4 group-hover:bg-kej-green group-hover:text-white transition-all">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                    </div>
+                                    <div class="font-bold text-kej-navy">Kelola User</div>
+                                    <div class="text-[10px] text-kej-muted font-bold uppercase mt-1 tracking-wider">Database Terpidana</div>
+                                </a>
+                                <a href="{{ route('pidana.list') }}" class="p-5 bg-kej-bg rounded-2xl border border-kej-border hover:border-kej-green transition-all group">
+                                    <div class="w-12 h-12 bg-white rounded-xl shadow-sm grid place-items-center text-kej-navy mb-4 group-hover:bg-kej-green group-hover:text-white transition-all">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                    </div>
+                                    <div class="font-bold text-kej-navy">Monitoring</div>
+                                    <div class="text-[10px] text-kej-muted font-bold uppercase mt-1 tracking-wider">Laporan Aktivitas</div>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

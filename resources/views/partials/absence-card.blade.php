@@ -6,9 +6,16 @@
         </div>
         <div class="flex-1 min-w-0">
             <div class="flex justify-between items-start mb-1">
-                <h4 class="font-bold text-kej-navy text-[15px] truncate leading-tight">
-                    {{ $absence->location_name ?? 'Presensi Terverifikasi' }}
-                </h4>
+                <div>
+                    <h4 class="font-bold text-kej-navy text-[15px] truncate leading-tight">
+                        {{ $absence->location_name ?? 'Presensi Terverifikasi' }}
+                    </h4>
+                    @if(auth()->check() && auth()->user()->role === 'admin' && $absence->user)
+                        <div class="text-[10px] font-black text-kej-green uppercase tracking-wider mt-0.5">
+                            {{ $absence->user->name }}
+                        </div>
+                    @endif
+                </div>
                 <span class="text-[10px] font-bold text-kej-muted whitespace-nowrap">{{ $absence->created_at->diffForHumans() }}</span>
             </div>
             <div class="flex justify-between items-center">

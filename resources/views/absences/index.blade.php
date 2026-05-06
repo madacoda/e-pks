@@ -34,6 +34,12 @@
                         <div>
                             <div class="text-[11px] font-bold text-kej-muted uppercase tracking-widest mb-1">{{ $absence->created_at->format('d F Y') }}</div>
                             <h3 class="font-serif text-lg font-bold text-kej-navy">{{ $absence->location_name ?? 'Lokasi Kerja Terverifikasi' }}</h3>
+                            @if(Auth::user()->role === 'admin' && $absence->user)
+                                <div class="mt-1 flex items-center gap-1.5">
+                                    <span class="text-[11px] font-bold text-kej-muted uppercase">Terpidana:</span>
+                                    <a href="{{ route('pidana.show', $absence->user->id) }}" class="text-[11px] font-black text-kej-green hover:underline uppercase">{{ $absence->user->name }}</a>
+                                </div>
+                            @endif
                         </div>
                         <div class="px-3 py-1 rounded-full text-[10px] font-black tracking-widest uppercase {{ $absence->status === 'present' ? 'bg-kej-green/10 text-kej-green border border-kej-green/20' : 'bg-kej-red/10 text-kej-red border border-kej-red/20' }}">
                             {{ $absence->status }}
@@ -64,6 +70,12 @@
             </div>
             @endforelse
         </div>
+
+        @if($absences->hasPages())
+            <div class="mt-10 bg-white border border-kej-border rounded-2xl p-4 shadow-sm">
+                {{ $absences->links() }}
+            </div>
+        @endif
     </div>
 </div>
 @endsection

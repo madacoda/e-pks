@@ -10,7 +10,13 @@ class AbsenceController extends Controller
 {
     public function index()
     {
-        $absences = Auth::user()->absences()->latest()->get();
+        $user = Auth::user();
+        
+        if ($user->role === 'admin') {
+            $absences = Absence::with('user')->latest()->paginate(10);
+        } else {
+            $absences = $user->absences()->latest()->paginate(10);
+        }
 
         return view('absences.index', compact('absences'));
     }
