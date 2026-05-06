@@ -6,11 +6,11 @@
     <div class="bg-kej-bg min-h-screen py-10">
         <div class="max-w-[1240px] mx-auto px-6">
             <!-- Dashboard Header -->
-            <div class="flex flex-wrap justify-between items-end gap-5 mb-10">
-                <div>
-                    <div class="text-[11px] font-extrabold text-kej-gold-dark tracking-[0.2em] uppercase mb-2">Portal
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-6 mb-10">
+                <div class="animate-fade-in">
+                    <div class="text-[10px] sm:text-[11px] font-extrabold text-kej-gold-dark tracking-[0.2em] uppercase mb-1 sm:mb-2">Portal
                         Terpidana</div>
-                    <h1 class="font-serif text-3xl font-black text-kej-navy tracking-tight">Selamat Datang, <span
+                    <h1 class="font-serif text-2xl sm:text-3xl font-black text-kej-navy tracking-tight leading-tight">Selamat Datang, <span
                             class="text-kej-green">{{ Auth::user()->name }}</span></h1>
                 </div>
                 <div class="flex gap-3">
@@ -211,18 +211,18 @@
 
                     <!-- Action Card -->
                     <div
-                        class="bg-white border border-kej-border rounded-2xl p-8 shadow-sm text-center relative overflow-hidden">
-                        <div class="absolute top-0 right-0 p-10 opacity-[0.03]">
+                        class="bg-white border border-kej-border rounded-2xl p-6 sm:p-10 shadow-sm text-center relative overflow-hidden">
+                        <div class="absolute top-0 right-0 p-10 opacity-[0.03] hidden sm:block">
                             <svg width="200" height="200" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                             </svg>
                         </div>
                         <div class="relative z-10">
-                            <h3 class="font-serif text-xl font-black text-kej-navy mb-3">Lakukan Presensi Hari Ini</h3>
-                            <p class="text-[15px] text-kej-muted mb-8 max-w-md mx-auto">Pastikan Anda berada di lokasi kerja
+                            <h3 class="font-serif text-lg sm:text-xl font-black text-kej-navy mb-3">Lakukan Presensi Hari Ini</h3>
+                            <p class="text-sm sm:text-[15px] text-kej-muted mb-8 max-w-md mx-auto">Pastikan Anda berada di lokasi kerja
                                 sosial sebelum menekan tombol presensi. Sistem akan memvalidasi selfie dan GPS Anda.</p>
                             <a href="{{ route('absences.create') }}"
-                                class="inline-flex items-center gap-3 bg-kej-green text-white px-10 py-4 rounded-xl font-black text-sm tracking-widest uppercase shadow-[0_10px_20px_rgba(26,110,48,0.2)] hover:bg-kej-gold hover:text-kej-navy transition-all transform hover:-translate-y-1">
+                                class="inline-flex items-center justify-center gap-3 bg-kej-green text-white w-full sm:w-auto px-10 py-4 rounded-xl font-black text-xs sm:text-sm tracking-widest uppercase shadow-[0_10px_20px_rgba(26,110,48,0.2)] hover:bg-kej-gold hover:text-kej-navy transition-all transform hover:-translate-y-1">
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2.5">
                                     <path

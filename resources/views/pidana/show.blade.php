@@ -3,57 +3,57 @@
 @section('title', $user->name . ' — Monitoring E-PKS')
 
 @section('content')
-<div class="bg-kej-bg min-h-screen py-10">
-    <div class="max-w-[1000px] mx-auto px-6">
-        <div class="mb-10">
-            <a href="{{ route('pidana.list') }}" class="text-[13px] font-bold text-kej-muted hover:text-kej-navy flex items-center gap-2 mb-6">
+<div class="bg-kej-bg min-h-screen py-6 sm:py-10">
+    <div class="max-w-[1000px] mx-auto px-4 sm:px-6">
+        <div class="mb-6 sm:mb-10">
+            <a href="{{ route('pidana.list') }}" class="text-[11px] sm:text-[13px] font-bold text-kej-muted hover:text-kej-navy flex items-center gap-2 mb-6">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
                 Kembali ke Daftar Terpidana
             </a>
             
-            <div class="bg-white border border-kej-border rounded-3xl p-8 shadow-sm relative overflow-hidden">
-                <div class="absolute top-0 right-0 p-12 opacity-[0.03]">
+            <div class="bg-white border border-kej-border rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 right-0 p-12 opacity-[0.03] hidden sm:block">
                     <svg width="240" height="240" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
                 </div>
                 
-                <div class="flex flex-col md:flex-row gap-10 relative z-10">
-                    <div class="w-32 h-32 bg-kej-navy rounded-2xl grid place-items-center text-white text-5xl font-serif font-black shrink-0">
+                <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6 sm:gap-10 relative z-10">
+                    <div class="w-24 h-24 sm:w-32 sm:h-32 bg-kej-navy rounded-2xl grid place-items-center text-white text-4xl sm:text-5xl font-serif font-black shrink-0 shadow-lg">
                         {{ substr($user->name, 0, 1) }}
                     </div>
-                    <div class="flex-1">
-                        <div class="flex flex-wrap justify-between items-start gap-4 mb-4">
+                    <div class="flex-1 text-center sm:text-left w-full">
+                        <div class="flex flex-col sm:flex-row justify-between items-center sm:items-start gap-4 mb-6 sm:mb-4">
                             <div>
-                                <h1 class="font-serif text-3xl font-black text-kej-navy mb-1">{{ $user->name }}</h1>
-                                <p class="text-sm font-bold text-kej-green tracking-widest uppercase">TERPIDANA KERJA SOSIAL</p>
+                                <h1 class="font-serif text-2xl sm:text-3xl font-black text-kej-navy mb-1 leading-tight">{{ $user->name }}</h1>
+                                <p class="text-[10px] sm:text-sm font-bold text-kej-green tracking-widest uppercase">TERPIDANA KERJA SOSIAL</p>
                             </div>
-                            <div class="flex flex-col sm:flex-row items-end sm:items-center gap-3">
+                            <div class="flex flex-col sm:flex-row items-center gap-3 w-full sm:w-auto">
                                 @if(auth()->check() && auth()->user()->role === 'admin')
-                                    <a href="{{ route('admin.edit', $user->id) }}" class="bg-kej-gold/10 text-kej-gold-dark hover:bg-kej-gold hover:text-white border border-kej-gold/50 px-4 py-2 rounded-xl text-xs font-black tracking-widest uppercase transition-colors">
+                                    <a href="{{ route('admin.edit', $user->id) }}" class="w-full sm:w-auto bg-kej-gold/10 text-kej-gold-dark hover:bg-kej-gold hover:text-white border border-kej-gold/50 px-4 py-2 rounded-xl text-[10px] sm:text-xs font-black tracking-widest uppercase transition-colors text-center">
                                         EDIT PROFIL
                                     </a>
                                 @endif
-                                <div class="bg-kej-green/10 text-kej-green border border-kej-green/20 px-4 py-2 rounded-xl text-xs font-black tracking-widest uppercase">
+                                <div class="w-full sm:w-auto bg-kej-green/10 text-kej-green border border-kej-green/20 px-4 py-2 rounded-xl text-[10px] sm:text-xs font-black tracking-widest uppercase text-center">
                                     STATUS: AKTIF
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 pt-6 border-t border-kej-border/50">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-6 border-t border-kej-border/50 text-left">
                             <div>
                                 <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Perkara</span>
-                                <span class="font-bold text-kej-navy">{{ $user->crime ?? '-' }}</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->crime ?? '-' }}</span>
                             </div>
                             <div>
                                 <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Satker</span>
-                                <span class="font-bold text-kej-navy">{{ $user->placement->name ?? 'Belum Ditentukan' }}</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->placement->name ?? 'Belum Ditentukan' }}</span>
                             </div>
                             <div>
                                 <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Hukuman</span>
-                                <span class="font-bold text-kej-navy">{{ $user->sentence ?? '-' }}</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->sentence ?? '-' }}</span>
                             </div>
                             <div>
                                 <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Tanggal Lahir</span>
-                                <span class="font-bold text-kej-navy">{{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('d F Y') : '-' }}</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('d F Y') : '-' }}</span>
                             </div>
                         </div>
                     </div>
@@ -62,8 +62,8 @@
         </div>
 
         <div class="mb-8">
-            <h2 class="font-serif text-2xl font-black text-kej-navy mb-1">Aktivitas & Progress</h2>
-            <p class="text-sm text-kej-muted">Riwayat presensi dan pengawasan lokasi real-time.</p>
+            <h2 class="font-serif text-xl sm:text-2xl font-black text-kej-navy mb-1">Aktivitas & Progress</h2>
+            <p class="text-xs sm:text-sm text-kej-muted">Riwayat presensi dan pengawasan lokasi real-time.</p>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -73,14 +73,14 @@
                     <div class="space-y-6">
                         <div>
                             <div class="flex justify-between items-end mb-2">
-                                <span class="text-2xl font-serif font-black text-kej-navy">{{ $absences->count() }} <small class="text-xs text-kej-muted">Kehadiran</small></span>
-                                <span class="text-[11px] font-bold text-kej-muted uppercase">Total Dijalani</span>
+                                <span class="text-xl sm:text-2xl font-serif font-black text-kej-navy">{{ $absences->count() }} <small class="text-[10px] sm:text-xs text-kej-muted uppercase">Kehadiran</small></span>
+                                <span class="text-[10px] sm:text-[11px] font-bold text-kej-muted uppercase">Total Dijalani</span>
                             </div>
                         </div>
                         <div>
                             <div class="flex justify-between items-end mb-2">
-                                <span class="text-2xl font-serif font-black text-kej-navy">{{ $absences->first() ? $absences->first()->created_at->format('d M Y') : '-' }}</span>
-                                <span class="text-[11px] font-bold text-kej-muted uppercase">Terakhir Aktif</span>
+                                <span class="text-xl sm:text-2xl font-serif font-black text-kej-navy">{{ $absences->first() ? $absences->first()->created_at->format('d M Y') : '-' }}</span>
+                                <span class="text-[10px] sm:text-[11px] font-bold text-kej-muted uppercase">Terakhir Aktif</span>
                             </div>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                         @forelse($absences as $absence)
                             @include('partials.absence-card', ['absence' => $absence])
                         @empty
-                            <div class="p-16 text-center text-kej-muted italic text-sm">
+                            <div class="p-10 sm:p-16 text-center text-kej-muted italic text-sm">
                                 Belum ada riwayat aktivitas yang tercatat.
                             </div>
                         @endforelse

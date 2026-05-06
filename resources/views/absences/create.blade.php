@@ -50,10 +50,10 @@
 
                                 <!-- Camera Controls -->
                                 <div id="camera-controls" class="hidden absolute bottom-6 left-0 right-0 flex justify-center gap-4 z-20">
-                                    <button type="button" id="capture-photo" class="w-16 h-16 bg-white border-4 border-kej-green rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all">
-                                        <div class="w-12 h-12 bg-kej-green rounded-full"></div>
+                                    <button type="button" id="capture-photo" class="w-12 h-12 sm:w-16 sm:h-16 bg-white/80 backdrop-blur-sm border-4 border-kej-green rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all">
+                                        <div class="w-8 h-8 sm:w-12 sm:h-12 bg-kej-green rounded-full"></div>
                                     </button>
-                                    <button type="button" id="stop-camera" class="absolute right-6 top-0 bottom-0 my-auto w-10 h-10 bg-black/50 text-white rounded-full flex items-center justify-center hover:bg-red-500 transition-all">
+                                    <button type="button" id="stop-camera" class="absolute right-6 top-0 bottom-0 my-auto w-10 h-10 bg-black/40 text-white rounded-full flex items-center justify-center hover:bg-red-500 transition-all backdrop-blur-sm">
                                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                                     </button>
                                 </div>

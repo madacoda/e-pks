@@ -8,11 +8,11 @@
             <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
                 <div class="animate-fade-in">
                     <div
-                        class="text-[11px] font-black text-kej-gold-dark tracking-[0.25em] uppercase mb-3 px-4 py-1.5 bg-kej-gold/10 rounded-full border border-kej-gold/30 inline-block">
+                        class="text-[10px] sm:text-[11px] font-black text-kej-gold-dark tracking-[0.25em] uppercase mb-3 px-4 py-1.5 bg-kej-gold/10 rounded-full border border-kej-gold/30 inline-block">
                         Transparansi Pengawasan</div>
-                    <h1 class="font-serif text-4xl lg:text-5xl font-black text-kej-navy tracking-tight">Monitoring <span
+                    <h1 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-black text-kej-navy tracking-tight leading-tight">Monitoring <span
                             class="text-kej-green">Terpidana</span></h1>
-                    <p class="text-[16px] text-kej-muted max-w-2xl mt-4 leading-relaxed">Sistem integrasi data publik untuk
+                    <p class="text-sm sm:text-[16px] text-kej-muted max-w-2xl mt-4 leading-relaxed">Sistem integrasi data publik untuk
                         memantau progres pelaksanaan pidana kerja sosial di seluruh Satker Kejaksaan RI.</p>
                 </div>
 
