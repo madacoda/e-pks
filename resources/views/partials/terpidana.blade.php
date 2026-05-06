@@ -35,7 +35,7 @@
                                 </div>
                                 <div class="flex justify-between items-center text-[12px]">
                                     <span class="text-kej-muted font-bold uppercase tracking-wider">Satker</span>
-                                    <span class="text-kej-navy font-black text-right">{{ $pidana->placement ?? 'Tidak Diketahui' }}</span>
+                                    <span class="text-kej-navy font-black text-right">{{ $pidana->placement->name ?? 'Tidak Diketahui' }}</span>
                                 </div>
                                 <div class="flex-1 flex flex-col justify-center items-center text-[12px] mt-3">
                                     <span class="text-kej-navy font-bold text-center">{{ $pidana->sentence ?? 'Kerja Sosial' }}</span>

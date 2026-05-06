@@ -113,7 +113,7 @@
                                     </div>
                                     <div class="flex-1 min-w-0">
                                         <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-wider leading-none mb-1">Satker</span>
-                                        <span class="block font-semibold text-kej-ink truncate">{{ Auth::user()->placement }}</span>
+                                        <span class="block font-semibold text-kej-ink truncate">{{ Auth::user()->placement->name }}</span>
                                     </div>
                                 </div>
                                 @endif
