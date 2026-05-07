@@ -4,9 +4,8 @@ services:
     container_name: e_pks_app
     restart: unless-stopped
     working_dir: /var/www/e-pks
-    # Ports 9000 should not be exposed to the host for security reasons
-    # Communication with Nginx happens over the internal bridge network
-
+    ports:
+      - "127.0.0.1:9001:9000"
     volumes:
       - ./.env:/var/www/e-pks/.env
       - ./storage/app/public:/var/www/e-pks/storage/app/public
