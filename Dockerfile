@@ -47,4 +47,10 @@ USER www-data
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000
+
+# Healthcheck to ensure the container is running correctly
+HEALTHCHECK --interval=30s --timeout=10s --retries=3 \
+  CMD php-fpm -t || exit 1
+
 CMD ["php-fpm"]
+
