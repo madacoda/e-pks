@@ -12,6 +12,24 @@
             </a>
             <h1 class="font-serif text-3xl font-black text-kej-navy">Mulai Presensi <span class="text-kej-green">Digital</span></h1>
             <p class="text-[15px] text-kej-muted mt-2">Pastikan Anda berada di lokasi kerja dan memiliki pencahayaan yang cukup untuk foto selfie.</p>
+            
+            @php
+                $lastSupervision = Auth::user()->supervisions()->latest()->first();
+            @endphp
+            @if($lastSupervision)
+            <div class="mt-4 p-4 bg-kej-navy/5 border border-kej-navy/10 rounded-2xl flex items-center gap-4 animate-fade-in">
+                <div class="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-kej-navy shadow-sm">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                </div>
+                <div>
+                    <div class="text-[10px] font-black text-kej-muted uppercase tracking-widest mb-0.5">Status Kedisiplinan Terakhir (PKS-03)</div>
+                    <div class="text-xs font-black text-kej-navy">
+                        Kepatuhan: <span class="{{ $lastSupervision->compliance_status === 'Patuh' ? 'text-kej-green' : 'text-red-600' }}">{{ $lastSupervision->compliance_status }}</span> 
+                        • Perilaku: <span class="text-kej-green">{{ $lastSupervision->behavior_status }}</span>
+                    </div>
+                </div>
+            </div>
+            @endif
         </div>
 
         <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm">

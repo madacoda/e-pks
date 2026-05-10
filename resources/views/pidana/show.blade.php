@@ -38,22 +38,43 @@
                             </div>
                         </div>
                         
-                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 pt-6 border-t border-kej-border/50 text-left">
+                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 pt-6 border-t border-kej-border/50 text-left">
+                            <div>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">No. Register Perkara</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->pks02_case_number ?? '-' }}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">NIK</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->national_id ? substr($user->national_id, 0, 4) . '********' . substr($user->national_id, -4) : '-' }}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Tempat, Tgl Lahir</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->place_of_birth ?? '-' }}, {{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('d M Y') : '-' }}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Jenis Kelamin & Agama</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->gender ?? '-' }} / {{ $user->religion ?? '-' }}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Pendidikan & Pekerjaan</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->education ?? '-' }} - {{ $user->occupation ?? '-' }}</span>
+                            </div>
+                            <div>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Alamat Lengkap</span>
+                                <span class="font-bold text-kej-navy text-sm sm:text-base line-clamp-1" title="{{ $user->address }}">{{ $user->address ?? '-' }}</span>
+                            </div>
+                            <div class="sm:col-span-3 border-t border-kej-border/50 pt-4 mt-2"></div>
                             <div>
                                 <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Perkara</span>
                                 <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->crime ?? '-' }}</span>
                             </div>
                             <div>
-                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Satker</span>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Satker Penempatan</span>
                                 <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->placement->name ?? 'Belum Ditentukan' }}</span>
                             </div>
                             <div>
-                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Hukuman</span>
+                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Masa Hukuman (Vonis)</span>
                                 <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->sentence ?? '-' }}</span>
-                            </div>
-                            <div>
-                                <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Tanggal Lahir</span>
-                                <span class="font-bold text-kej-navy text-sm sm:text-base">{{ $user->date_of_birth ? \Carbon\Carbon::parse($user->date_of_birth)->format('d F Y') : '-' }}</span>
                             </div>
                         </div>
                     </div>
@@ -85,6 +106,43 @@
                         </div>
                     </div>
                 </div>
+
+                {{-- PKS-02 Info --}}
+                @if($user->pks02_opinion_analysis)
+                <div class="bg-white border border-kej-border rounded-2xl p-6 shadow-sm">
+                    <div class="flex items-center gap-3 mb-6 border-b border-kej-border pb-4">
+                        <div class="w-8 h-8 bg-kej-gold/20 rounded flex items-center justify-center text-kej-gold-dark">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-xs font-bold text-kej-navy uppercase tracking-widest">Pendapat Penuntut Umum</h3>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        @if($user->pks02_prosecutor_name)
+                        <div>
+                            <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Jaksa Penuntut Umum</span>
+                            <span class="font-bold text-kej-navy text-sm">{{ $user->pks02_prosecutor_name }}</span>
+                        </div>
+                        @endif
+                        
+                        @if($user->pks02_opinion_analysis)
+                        <div>
+                            <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Analisis Hukum</span>
+                            <div class="text-kej-navy text-xs leading-relaxed">{!! nl2br(e($user->pks02_opinion_analysis)) !!}</div>
+                        </div>
+                        @endif
+
+                        @if($user->pks02_opinion_recommendation)
+                        <div>
+                            <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Rekomendasi</span>
+                            <div class="text-kej-navy text-xs leading-relaxed italic">{!! nl2br(e($user->pks02_opinion_recommendation)) !!}</div>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+                @endif
             </div>
 
             <div class="lg:col-span-2 space-y-6">
@@ -102,6 +160,33 @@
                         @endforelse
                     </div>
                 </div>
+
+                @if($user->supervisions->count() > 0)
+                <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm">
+                    <div class="px-6 py-4 border-b border-kej-border bg-kej-navy/5">
+                        <h3 class="font-serif font-black text-kej-navy text-sm uppercase tracking-wider">Catatan Pengawasan (PKS-03)</h3>
+                    </div>
+                    <div class="divide-y divide-kej-border">
+                        @foreach($user->supervisions()->latest()->get() as $supervision)
+                            <div class="p-6 hover:bg-kej-bg/30 transition-colors">
+                                <div class="flex justify-between items-start mb-3">
+                                    <div>
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <span class="text-xs font-black text-kej-navy uppercase">{{ $supervision->supervision_date->format('d F Y') }}</span>
+                                            <span class="px-2 py-0.5 bg-kej-navy text-white rounded text-[9px] font-black uppercase tracking-tighter">{{ $supervision->supervision_type }}</span>
+                                        </div>
+                                        <div class="flex gap-2">
+                                            <span class="text-[10px] font-bold text-kej-muted uppercase">Perilaku: <span class="text-kej-navy">{{ $supervision->behavior_status ?? '-' }}</span></span>
+                                            <span class="text-[10px] font-bold text-kej-muted uppercase">Kepatuhan: <span class="text-kej-green">{{ $supervision->compliance_status ?? '-' }}</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-kej-muted leading-relaxed">{{ $supervision->notes }}</p>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>

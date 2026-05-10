@@ -42,6 +42,14 @@
     </main>
 
     @include('partials.footer')
+    
+    <div class="fixed bottom-6 right-6 z-50">
+        <a href="{{ route('complaints.create') }}" class="flex items-center gap-3 bg-kej-navy text-white pl-5 pr-6 py-3 rounded-full shadow-2xl hover:bg-kej-green transition-all transform hover:-translate-y-1 group">
+            <svg class="group-hover:rotate-12 transition-transform" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            <span class="text-xs font-black uppercase tracking-widest">Aduan</span>
+        </a>
+    </div>
+
     @include('partials.absence-modal')
 
     @stack('scripts')

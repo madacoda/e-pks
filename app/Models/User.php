@@ -11,7 +11,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role', 'date_of_birth', 'crime', 'avatar', 'placement_id', 'sentence'])]
+#[Fillable([
+    'name', 'national_id', 'email', 'password', 'role', 'date_of_birth', 'place_of_birth', 'gender', 'religion', 'education', 'occupation', 'address', 'crime', 'avatar', 'placement_id', 'sentence',
+    'pks02_prosecutor_name', 'pks02_case_number', 'pks02_opinion_analysis', 'pks02_opinion_recommendation', 'pks02_opinion_conclusion',
+])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -39,5 +42,10 @@ class User extends Authenticatable
     public function placement()
     {
         return $this->belongsTo(Placement::class);
+    }
+
+    public function supervisions(): HasMany
+    {
+        return $this->hasMany(Pks03Supervision::class);
     }
 }

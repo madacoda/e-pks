@@ -90,9 +90,15 @@
                 <span class="w-[1px] h-3 bg-white/20 hidden sm:block"></span>
                 <span class="font-serif italic text-kej-gold font-bold">Satya Adhi Wicaksana</span>
             </div>
-            <div class="flex gap-5">
-                <a href="#" class="hover:text-kej-gold transition-colors">Kebijakan Privasi</a>
-                <a href="#" class="hover:text-kej-gold transition-colors">Syarat & Ketentuan</a>
+            <div class="flex items-center gap-5">
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-kej-gold transition-colors">Kebijakan Privasi</a>
+                    <a href="#" class="hover:text-kej-gold transition-colors">Syarat & Ketentuan</a>
+                </div>
+                <span class="w-[1px] h-3 bg-white/20 hidden sm:block"></span>
+                <div class="text-[11px] font-bold tracking-tight">
+                    Powered by <a href="https://madacoda.dev" target="_blank" class="text-white hover:text-kej-gold transition-all">madacoda.dev</a>
+                </div>
             </div>
         </div>
     </div>

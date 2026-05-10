@@ -23,38 +23,100 @@
             @endif
         </div>
 
-        <!-- Stats Overview (New for "WOW" and Utility) -->
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <!-- Monitoring Stats (Enhanced for Phase 2) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
             <div class="bg-white p-5 rounded-2xl border border-kej-border shadow-sm hover:shadow-md transition-shadow">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-kej-navy/5 rounded-xl flex items-center justify-center text-kej-navy">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     </div>
                     <div>
-                        <div class="text-[10px] font-black text-kej-muted uppercase tracking-wider mb-0.5">Total User</div>
-                        <div class="text-2xl font-black text-kej-navy leading-none">{{ count($users) }}</div>
+                        <div class="text-[10px] font-black text-kej-muted uppercase tracking-wider mb-0.5">Total Terpidana</div>
+                        <div class="text-2xl font-black text-kej-navy leading-none">{{ $stats['total_pidana'] }}</div>
                     </div>
                 </div>
             </div>
             <div class="bg-white p-5 rounded-2xl border border-kej-border shadow-sm hover:shadow-md transition-shadow">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-kej-green/5 rounded-xl flex items-center justify-center text-kej-green">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                     </div>
                     <div>
-                        <div class="text-[10px] font-black text-kej-muted uppercase tracking-wider mb-0.5">Admin</div>
-                        <div class="text-2xl font-black text-kej-navy leading-none">{{ $users->where('role', 'admin')->count() }}</div>
+                        <div class="text-[10px] font-black text-kej-muted uppercase tracking-wider mb-0.5">Aktivitas Absensi</div>
+                        <div class="text-2xl font-black text-kej-navy leading-none">{{ $stats['total_absences'] }}</div>
                     </div>
                 </div>
             </div>
             <div class="bg-white p-5 rounded-2xl border border-kej-border shadow-sm hover:shadow-md transition-shadow">
                 <div class="flex items-center gap-4">
                     <div class="w-12 h-12 bg-kej-gold/5 rounded-xl flex items-center justify-center text-kej-gold-dark">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="17" y1="11" x2="23" y2="11"/></svg>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
                     </div>
                     <div>
-                        <div class="text-[10px] font-black text-kej-muted uppercase tracking-wider mb-0.5">Terpidana</div>
-                        <div class="text-2xl font-black text-kej-navy leading-none">{{ $users->where('role', 'pidana')->count() }}</div>
+                        <div class="text-[10px] font-black text-kej-muted uppercase tracking-wider mb-0.5">Form PKS-03</div>
+                        <div class="text-2xl font-black text-kej-navy leading-none">{{ $stats['total_supervisions'] }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white p-5 rounded-2xl border border-kej-border shadow-sm hover:shadow-md transition-shadow">
+                <div class="flex items-center gap-4">
+                    <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-red-600">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-[10px] font-black text-kej-muted uppercase tracking-wider mb-0.5">Laporan Aduan</div>
+                        <div class="text-2xl font-black text-kej-navy leading-none">0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            <div class="lg:col-span-2">
+                <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm">
+                    <div class="px-6 py-4 border-b border-kej-border bg-kej-bg/30 flex justify-between items-center">
+                        <h3 class="font-serif font-black text-kej-navy text-sm uppercase tracking-wider">Aktivitas Presensi Terbaru</h3>
+                        <span class="text-[10px] font-bold text-kej-muted uppercase tracking-widest animate-pulse">Live Monitoring</span>
+                    </div>
+                    <div class="divide-y divide-kej-border">
+                        @forelse($stats['recent_absences'] as $absence)
+                            <div class="p-4 flex items-center justify-between hover:bg-kej-bg/20 transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-kej-navy/10 rounded-lg flex items-center justify-center text-kej-navy text-[10px] font-black">
+                                        {{ strtoupper(substr($absence->user->name, 0, 1)) }}
+                                    </div>
+                                    <div>
+                                        <div class="text-xs font-black text-kej-navy">{{ $absence->user->name }}</div>
+                                        <div class="text-[10px] text-kej-muted font-bold">{{ $absence->created_at->diffForHumans() }} • {{ $absence->location_name ?? 'Lokasi Terverifikasi' }}</div>
+                                    </div>
+                                </div>
+                                <div class="px-3 py-1 bg-kej-green/10 text-kej-green rounded-full text-[9px] font-black uppercase">Hadir</div>
+                            </div>
+                        @empty
+                            <div class="p-10 text-center text-kej-muted italic text-xs">Belum ada aktivitas hari ini.</div>
+                        @endforelse
+                    </div>
+                </div>
+            </div>
+            <div class="lg:col-span-1">
+                <div class="bg-white border border-kej-border rounded-2xl p-6 shadow-sm h-full">
+                    <h3 class="text-xs font-bold text-kej-navy uppercase tracking-widest mb-6 border-b border-kej-border pb-4">Status Pengawasan</h3>
+                    <div class="space-y-6">
+                        <div class="relative pt-1">
+                            <div class="flex mb-2 items-center justify-between">
+                                <div><span class="text-[10px] font-black inline-block py-1 px-2 uppercase rounded-full text-kej-green bg-kej-green/10">Kepatuhan Tinggi</span></div>
+                                <div class="text-right"><span class="text-xs font-black inline-block text-kej-green">85%</span></div>
+                            </div>
+                            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-kej-green/10">
+                                <div style="width:85%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-kej-green"></div>
+                            </div>
+                        </div>
+                        <div class="p-4 bg-kej-gold/5 rounded-xl border border-kej-gold/20">
+                            <div class="flex gap-3">
+                                <svg class="text-kej-gold-dark shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                                <p class="text-[11px] font-bold text-kej-navy leading-relaxed">System Note: Pastikan seluruh Form PKS-02 untuk terpidana baru telah diinput oleh Jaksa Penuntut Umum.</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,7 +185,12 @@
                             </td>
                             <td class="px-6 py-5 text-right">
                                 <div class="flex justify-end items-center gap-1 sm:gap-2">
-                                    <a href="{{ route('admin.edit', $user->id) }}" class="p-2 sm:p-2.5 text-kej-muted hover:text-kej-green hover:bg-kej-green/10 rounded-xl transition-all" title="Edit User">
+                                    @if($user->role === 'pidana')
+                                    <a href="{{ route('admin.supervisions.index', $user->id) }}" class="p-2 sm:p-2.5 text-kej-muted hover:text-kej-navy hover:bg-kej-navy/10 rounded-xl transition-all" title="Catatan Pengawasan">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="10" x2="15" y2="10"/></svg>
+                                    </a>
+                                    @endif
+                                    <a href="{{ route('admin.edit', $user->id) }}" class="p-2 sm:p-2.5 text-kej-muted hover:text-kej-green hover:bg-kej-green/10 rounded-xl transition-all" title="Edit Profiling & User">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
                                     </a>
 

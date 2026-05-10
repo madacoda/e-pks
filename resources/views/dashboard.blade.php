@@ -157,6 +157,27 @@
                 <div class="lg:col-span-2 space-y-8">
                     <!-- Status Row -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        @if(!$isAdmin)
+                            @php $lastSupervision = Auth::user()->supervisions()->latest()->first(); @endphp
+                            @if($lastSupervision)
+                            <div class="md:col-span-2 bg-kej-navy text-white rounded-2xl p-6 shadow-lg flex items-center gap-6 relative overflow-hidden group">
+                                <div class="absolute right-0 top-0 p-8 opacity-10 group-hover:scale-110 transition-transform">
+                                    <svg width="100" height="100" viewBox="0 0 24 24" fill="currentColor"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <div class="w-16 h-16 bg-white/10 rounded-2xl flex items-center justify-center text-kej-gold shrink-0 backdrop-blur-sm">
+                                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                                </div>
+                                <div class="relative z-10">
+                                    <div class="text-[10px] font-black text-white/50 uppercase tracking-[0.2em] mb-1.5">Status Pengawasan PKS-03</div>
+                                    <div class="text-lg font-serif font-black mb-1">
+                                        Kepatuhan: <span class="{{ $lastSupervision->compliance_status === 'Patuh' ? 'text-kej-green' : 'text-kej-gold' }}">{{ $lastSupervision->compliance_status }}</span>
+                                    </div>
+                                    <p class="text-[11px] font-bold text-white/70 uppercase tracking-wider">Perilaku: {{ $lastSupervision->behavior_status }} • Update: {{ $lastSupervision->supervision_date->format('d M Y') }}</p>
+                                </div>
+                            </div>
+                            @endif
+                        @endif
+
                         <div class="bg-white border border-kej-border rounded-2xl p-6 shadow-sm flex items-center gap-5">
                             <div class="w-14 h-14 bg-kej-green/10 rounded-xl grid place-items-center text-kej-green">
                                 <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor"
