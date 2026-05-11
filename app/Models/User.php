@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
@@ -79,9 +80,15 @@ class User extends Authenticatable
             ->whereNotNull('end_time')
             ->get()
             ->sum(function ($supervision) {
-                $start = \Carbon\Carbon::parse($supervision->start_time);
-                $end = \Carbon\Carbon::parse($supervision->end_time);
+                $start = Carbon::parse($supervision->start_time);
+                $end = Carbon::parse($supervision->end_time);
+
                 return $end->diffInMinutes($start) / 60;
             });
+    }
+
+    public function pks03Assessment()
+    {
+        return $this->hasOne(Pks03SupportAssessment::class, 'user_id');
     }
 }

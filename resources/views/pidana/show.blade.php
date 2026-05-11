@@ -140,6 +140,13 @@
                             <div class="text-kej-navy text-xs leading-relaxed italic">{!! nl2br(e($user->pks02_opinion_recommendation)) !!}</div>
                         </div>
                         @endif
+
+                        @if($user->pks02_opinion_conclusion)
+                        <div>
+                            <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-widest mb-1">Kesimpulan</span>
+                            <div class="text-kej-navy text-xs font-bold leading-relaxed">{!! nl2br(e($user->pks02_opinion_conclusion)) !!}</div>
+                        </div>
+                        @endif
                     </div>
                 </div>
                 @endif

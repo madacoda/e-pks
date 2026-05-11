@@ -31,7 +31,7 @@ test('admin can access management panel', function () {
     $this->actingAs($admin)
         ->get('/admin/users')
         ->assertSuccessful()
-        ->assertSeeInOrder(['Manajemen', 'Database User']);
+        ->assertSeeInOrder(['Sistem Administrasi', 'Database User']);
 });
 
 test('non-admin cannot access management panel', function () {
