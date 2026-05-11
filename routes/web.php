@@ -71,6 +71,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/users/{user}/report/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
         Route::get('/users/{user}/report/monthly/pdf', [PdfExportController::class, 'monthlyAbsence'])->name('export.monthly');
 
+        // Settings / CMS
+        Route::get('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'index'])->name('settings.index');
+        Route::post('/settings', [\App\Http\Controllers\Admin\SettingController::class, 'store'])->name('settings.store');
+
         // Placements
         Route::resource('placements', PlacementController::class);
     });

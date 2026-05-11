@@ -31,9 +31,6 @@
                 <li><a href="{{ route('pidana.list') }}"
                         class="{{ request()->routeIs('pidana.*') ? 'text-kej-navy bg-kej-gold/10 border-b-2 border-kej-gold' : 'text-kej-ink hover:bg-kej-bg hover:text-kej-navy' }} rounded px-4 py-2.5 text-[13px] font-bold transition-all uppercase tracking-wider">Monitoring</a>
                 </li>
-                <li><a href="#simulasi"
-                        class="text-kej-ink hover:bg-kej-bg hover:text-kej-navy rounded px-4 py-2.5 text-[13px] font-bold transition-all uppercase tracking-wider">Simulasi</a>
-                </li>
                 <li><a href="{{ route('regulations') }}"
                         class="{{ request()->routeIs('regulations') ? 'text-kej-navy bg-kej-gold/10 border-b-2 border-kej-gold' : 'text-kej-ink hover:bg-kej-bg hover:text-kej-navy' }} rounded px-4 py-2.5 text-[13px] font-bold transition-all uppercase tracking-wider">Hukum</a>
                 </li>

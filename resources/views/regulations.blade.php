@@ -34,6 +34,25 @@
                     </div>
 
                     <div class="space-y-32">
+                        @php
+                            $kewajiban = \App\Models\Setting::get('regulations_kewajiban');
+                            $kewajibanArray = $kewajiban ? json_decode($kewajiban, true) : [
+                                "Wajib hadir tepat waktu di lokasi kerja sosial yang telah ditentukan (Satker) sesuai jadwal yang disepakati.",
+                                "Melakukan presensi digital secara real-time menggunakan aplikasi E-PKS (Selfie & GPS) pada saat mulai dan selesai kegiatan.",
+                                "Menjaga sikap, perilaku, dan etika selama menjalankan tugas kerja sosial di lingkungan masyarakat atau instansi terkait.",
+                                "Dilarang meninggalkan wilayah hukum tempat pelaksanaan PKS tanpa izin tertulis dari Jaksa Pengawas."
+                            ];
+
+                            $larangan = \App\Models\Setting::get('regulations_larangan');
+                            $laranganArray = $larangan ? json_decode($larangan, true) : [
+                                "Pemberian Surat Peringatan (SP 1, 2, dan 3).",
+                                "Penambahan durasi jam kerja sosial sebagai bentuk penalti.",
+                                "Pelaporan kepada Pengadilan untuk evaluasi status pidana (Kemungkinan eksekusi pidana penjara)."
+                            ];
+
+                            $monitoring = \App\Models\Setting::get('regulations_monitoring', "Jaksa Pengawas menggunakan dashboard E-PKS untuk memantau keberadaan dan aktivitas Terpidana. Sistem secara otomatis memberikan notifikasi jika Terpidana berada di luar radius lokasi yang ditentukan atau tidak melakukan presensi sesuai jadwal.");
+                        @endphp
+
                         {{-- Section 1 --}}
                         <div class="animate-fade-in mb-3" style="animation-delay: 0.1s">
                             <h3 class="flex items-center gap-3 text-sm font-black text-kej-navy uppercase tracking-widest mb-4">
@@ -41,22 +60,12 @@
                                 Kewajiban Terpidana
                             </h3>
                             <ul class="space-y-2 ml-11">
+                                @foreach($kewajibanArray as $item)
                                 <li class="flex gap-4">
                                     <div class="mt-1.5 w-1.5 h-1.5 bg-kej-gold rounded-full shrink-0"></div>
-                                    <p class="text-sm text-kej-muted leading-relaxed font-semibold">Wajib hadir tepat waktu di lokasi kerja sosial yang telah ditentukan (Satker) sesuai jadwal yang disepakati.</p>
+                                    <p class="text-sm text-kej-muted leading-relaxed font-semibold">{{ $item }}</p>
                                 </li>
-                                <li class="flex gap-4">
-                                    <div class="mt-1.5 w-1.5 h-1.5 bg-kej-gold rounded-full shrink-0"></div>
-                                    <p class="text-sm text-kej-muted leading-relaxed font-semibold">Melakukan presensi digital secara real-time menggunakan aplikasi E-PKS (Selfie & GPS) pada saat mulai dan selesai kegiatan.</p>
-                                </li>
-                                <li class="flex gap-4">
-                                    <div class="mt-1.5 w-1.5 h-1.5 bg-kej-gold rounded-full shrink-0"></div>
-                                    <p class="text-sm text-kej-muted leading-relaxed font-semibold">Menjaga sikap, perilaku, dan etika selama menjalankan tugas kerja sosial di lingkungan masyarakat atau instansi terkait.</p>
-                                </li>
-                                <li class="flex gap-4">
-                                    <div class="mt-1.5 w-1.5 h-1.5 bg-kej-gold rounded-full shrink-0"></div>
-                                    <p class="text-sm text-kej-muted leading-relaxed font-semibold">Dilarang meninggalkan wilayah hukum tempat pelaksanaan PKS tanpa izin tertulis dari Jaksa Pengawas.</p>
-                                </li>
+                                @endforeach
                             </ul>
                         </div>
 
@@ -69,18 +78,12 @@
                             <div class="bg-kej-bg rounded-2xl p-6 border border-kej-border ml-11">
                                 <p class="text-xs text-kej-navy font-bold leading-relaxed mb-4 italic">Setiap pelanggaran terhadap pedoman ini akan dicatat dalam Form PKS-03 dan dapat berakibat pada:</p>
                                 <ul class="space-y-3">
+                                    @foreach($laranganArray as $item)
                                     <li class="flex items-center gap-3 text-[13px] font-bold text-red-600">
                                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                        Pemberian Surat Peringatan (SP 1, 2, dan 3).
+                                        {{ $item }}
                                     </li>
-                                    <li class="flex items-center gap-3 text-[13px] font-bold text-red-600">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                        Penambahan durasi jam kerja sosial sebagai bentuk penalti.
-                                    </li>
-                                    <li class="flex items-center gap-3 text-[13px] font-bold text-red-600">
-                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                        Pelaporan kepada Pengadilan untuk evaluasi status pidana (Kemungkinan eksekusi pidana penjara).
-                                    </li>
+                                    @endforeach
                                 </ul>
                             </div>
                         </div>
@@ -92,7 +95,7 @@
                                 Monitoring Digital
                             </h3>
                             <p class="text-sm text-kej-muted leading-relaxed font-semibold ml-11 mb-4">
-                                Jaksa Pengawas menggunakan dashboard E-PKS untuk memantau keberadaan dan aktivitas Terpidana. Sistem secara otomatis memberikan notifikasi jika Terpidana berada di luar radius lokasi yang ditentukan atau tidak melakukan presensi sesuai jadwal.
+                                {{ $monitoring }}
                             </p>
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 ml-11 mb-10">
                                 <div class="p-4 bg-kej-bg border border-kej-border rounded-xl flex items-center gap-3">
