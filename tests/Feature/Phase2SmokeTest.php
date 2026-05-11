@@ -32,6 +32,8 @@ test('all phase 2 pages load successfully without data leakage', function () {
         '/admin/users',
         "/admin/users/{$pidana->id}/edit",
         '/admin/complaints',
+        '/admin/supervisor-complaints',
+        '/admin/supervisor-complaints/create',
     ];
 
     foreach ($adminPages as $url) {

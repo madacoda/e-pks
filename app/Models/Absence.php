@@ -17,6 +17,7 @@ class Absence extends Model
         'longitude',
         'location_name',
         'status',
+        'is_flagged',
     ];
 
     public function user(): BelongsTo

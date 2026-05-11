@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Manajemen User — Admin E-PKS')
+@section('title', 'Kelola User — Admin E-PKS')
 
 @section('content')
 <div class="bg-kej-bg min-h-screen py-6 sm:py-10">
@@ -10,7 +10,7 @@
             <div class="animate-fade-in">
                 <div class="text-[10px] sm:text-[11px] font-extrabold text-kej-gold-dark tracking-[0.2em] uppercase mb-1 sm:mb-2">Sistem Administrasi</div>
                 <h1 class="font-serif text-2xl sm:text-3xl font-black text-kej-navy leading-tight">
-                    Manajemen <span class="text-kej-green">Database User</span>
+                    Kelola <span class="text-kej-green">Database User</span>
                 </h1>
                 <p class="text-kej-muted text-xs sm:text-sm mt-1 font-medium">Kelola akses dan data terpidana dalam satu panel terintegrasi.</p>
             </div>
@@ -21,6 +21,11 @@
                 {{ session('success') }}
             </div>
             @endif
+
+            <a href="{{ route('admin.placements.index') }}" class="bg-white border border-kej-border text-kej-navy px-5 py-2.5 rounded-lg text-[13px] font-bold hover:bg-kej-green hover:text-white transition-all flex items-center gap-2 shadow-sm">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Kelola Satker
+            </a>
         </div>
 
         <!-- Monitoring Stats (Enhanced for Phase 2) -->
@@ -58,21 +63,21 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white p-5 rounded-2xl border border-kej-border shadow-sm hover:shadow-md transition-shadow">
+            <a href="{{ route('admin.complaints.index') }}" class="block bg-white p-5 rounded-2xl border border-kej-border shadow-sm hover:shadow-md hover:border-red-200 transition-all group">
                 <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-red-600">
+                    <div class="w-12 h-12 bg-red-50 rounded-xl flex items-center justify-center text-red-600 group-hover:scale-110 transition-transform">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
                     </div>
                     <div>
-                        <div class="text-[10px] font-black text-kej-muted uppercase tracking-wider mb-0.5">Laporan Aduan</div>
-                        <div class="text-2xl font-black text-kej-navy leading-none">0</div>
+                        <div class="text-[10px] font-black text-kej-muted uppercase tracking-wider mb-0.5 group-hover:text-red-600 transition-colors">Laporan Aduan</div>
+                        <div class="text-2xl font-black text-kej-navy leading-none">{{ $stats['total_complaints'] }}</div>
                     </div>
                 </div>
-            </div>
+            </a>
         </div>
 
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
-            <div class="lg:col-span-2">
+        <div class="grid grid-cols-1 gap-8 mb-8">
+            <div class="lg:col-span-1">
                 <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm">
                     <div class="px-6 py-4 border-b border-kej-border bg-kej-bg/30 flex justify-between items-center">
                         <h3 class="font-serif font-black text-kej-navy text-sm uppercase tracking-wider">Aktivitas Presensi Terbaru</h3>
@@ -98,28 +103,46 @@
                     </div>
                 </div>
             </div>
+            {{-- 
             <div class="lg:col-span-1">
-                <div class="bg-white border border-kej-border rounded-2xl p-6 shadow-sm h-full">
-                    <h3 class="text-xs font-bold text-kej-navy uppercase tracking-widest mb-6 border-b border-kej-border pb-4">Status Pengawasan</h3>
-                    <div class="space-y-6">
-                        <div class="relative pt-1">
-                            <div class="flex mb-2 items-center justify-between">
-                                <div><span class="text-[10px] font-black inline-block py-1 px-2 uppercase rounded-full text-kej-green bg-kej-green/10">Kepatuhan Tinggi</span></div>
-                                <div class="text-right"><span class="text-xs font-black inline-block text-kej-green">85%</span></div>
-                            </div>
-                            <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-kej-green/10">
-                                <div style="width:85%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center bg-kej-green"></div>
-                            </div>
+                <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm h-full flex flex-col">
+                    <div class="px-6 py-4 border-b border-kej-border bg-kej-bg/30 flex justify-between items-center">
+                        <h3 class="font-serif font-black text-kej-navy text-sm uppercase tracking-wider">Compliance Rate</h3>
+                        <span class="text-[10px] font-bold text-kej-muted uppercase tracking-widest">7 Days</span>
+                    </div>
+                    <div class="p-6 flex-1 flex flex-col justify-between">
+                        <div class="flex items-end justify-between h-40 gap-2 relative">
+                            @foreach($stats['compliance_chart'] as $data)
+                                <div class="flex-1 flex flex-col items-center gap-2 group relative">
+                                    <div class="relative w-full bg-kej-bg rounded-t-lg overflow-hidden flex items-end h-32">
+                                        <div class="w-full bg-kej-green transition-all duration-1000 ease-out group-hover:bg-kej-gold-dark" 
+                                             style="height: {{ $data['rate'] }}%">
+                                        </div>
+                                    </div>
+                                    <div class="text-[9px] font-black text-kej-navy uppercase">{{ $data['day'] }}</div>
+                                    
+                                    <!-- Tooltip -->
+                                    <div class="absolute -top-8 left-1/2 -translate-x-1/2 bg-kej-navy text-white text-[9px] font-bold px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10">
+                                        {{ $data['rate'] }}%
+                                    </div>
+                                </div>
+                            @endforeach
                         </div>
-                        <div class="p-4 bg-kej-gold/5 rounded-xl border border-kej-gold/20">
-                            <div class="flex gap-3">
-                                <svg class="text-kej-gold-dark shrink-0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                                <p class="text-[11px] font-bold text-kej-navy leading-relaxed">System Note: Pastikan seluruh Form PKS-02 untuk terpidana baru telah diinput oleh Jaksa Penuntut Umum.</p>
+                        <div class="mt-8 pt-6 border-t border-kej-border">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-[10px] font-bold text-kej-muted uppercase tracking-widest">Avg. Compliance</span>
+                                <span class="text-sm font-black text-kej-navy">
+                                    {{ round(collect($stats['compliance_chart'])->avg('rate')) }}%
+                                </span>
+                            </div>
+                            <div class="w-full bg-kej-bg h-1.5 rounded-full overflow-hidden">
+                                <div class="bg-kej-green h-full" style="width: {{ collect($stats['compliance_chart'])->avg('rate') }}%"></div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            --}}
         </div>
 
         <!-- Filters -->
@@ -146,7 +169,7 @@
                             <th class="px-6 py-4 text-[10px] sm:text-[11px] font-black text-kej-muted uppercase tracking-[0.15em]">Akses</th>
                             <th class="hidden md:table-cell px-6 py-4 text-[10px] sm:text-[11px] font-black text-kej-muted uppercase tracking-[0.15em]">Data Personal</th>
                             <th class="hidden lg:table-cell px-6 py-4 text-[10px] sm:text-[11px] font-black text-kej-muted uppercase tracking-[0.15em]">Keterangan Perkara</th>
-                            <th class="px-6 py-4 text-[10px] sm:text-[11px] font-black text-kej-muted uppercase tracking-[0.15em] text-right">Manajemen</th>
+                            <th class="px-6 py-4 text-[10px] sm:text-[11px] font-black text-kej-muted uppercase tracking-[0.15em] text-right">Opsi Kelola</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-kej-border">
@@ -179,13 +202,21 @@
                                 </div>
                             </td>
                             <td class="hidden lg:table-cell px-6 py-5">
-                                <div class="text-sm font-semibold text-kej-ink max-w-[240px] truncate italic text-kej-muted">
-                                    {{ $user->crime ?? '—' }}
-                                </div>
+                                @if($user->role === 'pidana')
+                                    <div class="max-w-[200px]">
+                                        <div class="text-[11px] font-black text-kej-navy leading-tight mb-1" title="{{ $user->crime }}">{{ $user->crime ?? '—' }}</div>
+                                        <div class="text-[10px] font-bold text-kej-muted leading-tight italic line-clamp-2" title="{{ $user->sentence }}">{{ $user->sentence ?? '—' }}</div>
+                                    </div>
+                                @else
+                                    <div class="text-xs font-bold text-kej-muted italic text-center">— System Admin —</div>
+                                @endif
                             </td>
                             <td class="px-6 py-5 text-right">
                                 <div class="flex justify-end items-center gap-1 sm:gap-2">
                                     @if($user->role === 'pidana')
+                                    <a href="{{ route('absences.index', ['user_id' => $user->id]) }}" class="p-2 sm:p-2.5 text-kej-muted hover:text-kej-green hover:bg-kej-green/10 rounded-xl transition-all" title="Rekapitulasi Presensi Digital">
+                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                                    </a>
                                     <a href="{{ route('admin.supervisions.index', $user->id) }}" class="p-2 sm:p-2.5 text-kej-muted hover:text-kej-navy hover:bg-kej-navy/10 rounded-xl transition-all" title="Catatan Pengawasan">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="10" x2="15" y2="10"/></svg>
                                     </a>

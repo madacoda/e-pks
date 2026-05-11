@@ -2,13 +2,17 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Placement extends Model
 {
-    protected $fillable = ['name'];
+    use HasFactory;
 
-    public function users()
+    protected $fillable = ['name', 'address', 'pic_name', 'phone', 'latitude', 'longitude'];
+
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }

@@ -39,7 +39,7 @@ test('pidana can see dashboard with correct labels', function () {
 
 test('dashboard shows placement name and not json', function () {
     $placement = Placement::create(['name' => 'Kejaksaan Negeri Jakarta Pusat']);
-    
+
     $user = User::factory()->create([
         'role' => 'pidana',
         'placement_id' => $placement->id,
@@ -49,5 +49,5 @@ test('dashboard shows placement name and not json', function () {
         ->get('/dashboard')
         ->assertSuccessful()
         ->assertSee('Kejaksaan Negeri Jakarta Pusat')
-        ->assertDontSee('{"id":' . $placement->id);
+        ->assertDontSee('{"id":'.$placement->id);
 });

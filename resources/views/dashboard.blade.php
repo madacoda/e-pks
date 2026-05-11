@@ -106,15 +106,22 @@
                                 </div>
 
                                 @if(Auth::user()->placement)
-                                <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-kej-bg transition-colors">
-                                    <div class="w-10 h-10 bg-white border border-kej-border/50 rounded-lg grid place-items-center text-kej-muted shadow-sm">
+                                <div class="flex items-start gap-4 p-3 rounded-xl hover:bg-kej-bg transition-colors">
+                                    <div class="w-10 h-10 bg-white border border-kej-border/50 rounded-lg grid place-items-center text-kej-muted shadow-sm shrink-0">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                                            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-wider leading-none mb-1">Satker</span>
-                                        <span class="block font-semibold text-kej-ink truncate">{{ Auth::user()->placement->name }}</span>
+                                        <span class="block text-[10px] text-kej-muted font-bold uppercase tracking-wider leading-none mb-1">Satker & Lokasi</span>
+                                        <span class="block font-black text-[13px] text-kej-navy truncate">{{ Auth::user()->placement->name }}</span>
+                                        <span class="block text-[11px] text-kej-muted font-medium leading-relaxed mt-0.5">{{ Auth::user()->placement->address ?? 'Alamat belum diset' }}</span>
+                                        @if(Auth::user()->placement->pic_name)
+                                            <div class="mt-2 flex items-center gap-1.5 text-[10px] font-bold text-kej-green uppercase tracking-tighter">
+                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                                                {{ Auth::user()->placement->pic_name }} ({{ Auth::user()->placement->phone ?? '-' }})
+                                            </div>
+                                        @endif
                                     </div>
                                 </div>
                                 @endif
@@ -135,7 +142,7 @@
                                 </div>
                                 @endif
 
-                                @if(Auth::user()->crime)
+                                 @if(Auth::user()->crime)
                                 <div class="flex items-center gap-4 p-3 rounded-xl hover:bg-kej-bg transition-colors">
                                     <div class="w-10 h-10 bg-white border border-kej-border/50 rounded-lg grid place-items-center text-kej-muted shadow-sm">
                                         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -148,9 +155,73 @@
                                     </div>
                                 </div>
                                 @endif
+
+                                @if(Auth::user()->role === 'pidana' && Auth::user()->sentence_hours)
+                                <div class="p-4 mt-6 bg-kej-bg rounded-2xl border border-kej-border/60 shadow-inner">
+                                    <div class="flex justify-between items-center text-[10px] font-black uppercase tracking-widest mb-3">
+                                        <span class="text-kej-muted">Progress Kerja Sosial</span>
+                                        <span class="text-kej-navy">{{ number_format(Auth::user()->getTotalSupervisedHours(), 1) }} / {{ Auth::user()->sentence_hours }} Jam</span>
+                                    </div>
+                                    <div class="w-full bg-white h-2.5 rounded-full overflow-hidden border border-kej-border/50">
+                                        @php
+                                            $percentage = Auth::user()->sentence_hours > 0 ? (Auth::user()->getTotalSupervisedHours() / Auth::user()->sentence_hours) * 100 : 0;
+                                        @endphp
+                                        <div class="bg-kej-green h-full transition-all duration-1000 shadow-[0_0_10px_rgba(26,110,48,0.3)]" style="width: {{ min($percentage, 100) }}%"></div>
+                                    </div>
+                                    @if($percentage >= 100)
+                                        <div class="mt-3 text-center">
+                                            <span class="px-2 py-0.5 bg-kej-green text-white text-[9px] font-black rounded uppercase tracking-widest">Selesai</span>
+                                        </div>
+                                    @endif
+                                </div>
+                                @endif
                             </div>
                         </div>
                     </div>
+                    
+                    @if($isAdmin)
+                    <div class="mt-8 bg-white border border-kej-border rounded-2xl p-6 shadow-sm animate-fade-in" style="animation-delay: 0.1s">
+                        <h3 class="font-serif text-base font-black text-kej-navy mb-4 uppercase tracking-wider">Kelola Sistem</h3>
+                        <div class="grid grid-cols-1 gap-3">
+                            <a href="{{ route('admin.index') }}" class="flex items-center gap-4 p-3.5 bg-kej-bg rounded-xl border border-kej-border hover:border-kej-green hover:bg-white transition-all group">
+                                <div class="w-10 h-10 bg-white rounded-lg shadow-sm grid place-items-center text-kej-navy group-hover:bg-kej-green group-hover:text-white transition-all shrink-0">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-kej-navy text-xs sm:text-sm">Kelola User</div>
+                                    <div class="text-[9px] text-kej-muted font-bold uppercase tracking-tight">Database Terpidana</div>
+                                </div>
+                            </a>
+                            <a href="{{ route('admin.placements.index') }}" class="flex items-center gap-4 p-3.5 bg-kej-bg rounded-xl border border-kej-border hover:border-kej-green hover:bg-white transition-all group">
+                                <div class="w-10 h-10 bg-white rounded-lg shadow-sm grid place-items-center text-kej-navy group-hover:bg-kej-green group-hover:text-white transition-all shrink-0">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-kej-navy text-xs sm:text-sm">Kelola Satker</div>
+                                    <div class="text-[9px] text-kej-muted font-bold uppercase tracking-tight">Database Lokasi</div>
+                                </div>
+                            </a>
+                            <a href="{{ route('pidana.list') }}" class="flex items-center gap-4 p-3.5 bg-kej-bg rounded-xl border border-kej-border hover:border-kej-green hover:bg-white transition-all group">
+                                <div class="w-10 h-10 bg-white rounded-lg shadow-sm grid place-items-center text-kej-navy group-hover:bg-kej-green group-hover:text-white transition-all shrink-0">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-kej-navy text-xs sm:text-sm">Monitoring</div>
+                                    <div class="text-[9px] text-kej-muted font-bold uppercase tracking-tight">Laporan Aktivitas</div>
+                                </div>
+                            </a>
+                            <a href="{{ route('admin.complaints.index') }}" class="flex items-center gap-4 p-3.5 bg-kej-bg rounded-xl border border-kej-border hover:border-kej-green hover:bg-white transition-all group">
+                                <div class="w-10 h-10 bg-white rounded-lg shadow-sm grid place-items-center text-kej-navy group-hover:bg-kej-green group-hover:text-white transition-all shrink-0">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 11 18-5v12L3 13v-2Z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/></svg>
+                                </div>
+                                <div class="min-w-0">
+                                    <div class="font-bold text-kej-navy text-xs sm:text-sm">Aduan Publik</div>
+                                    <div class="text-[9px] text-kej-muted font-bold uppercase tracking-tight">Layanan Masukan</div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 <!-- Main Content Area -->
@@ -227,9 +298,9 @@
                             <a href="{{ route('absences.index') }}"
                                 class="text-[11px] font-bold text-kej-green hover:underline">LIHAT SEMUA</a>
                         </div>
-                        <div class="divide-y divide-kej-border">
+                        <div class="p-6 space-y-4">
                             @forelse($recentAbsences as $absence)
-                                @include('partials.absence-card', ['absence' => $absence])
+                                <x-absence-card :absence="$absence" compact />
                             @empty
                                 <div class="p-10 text-center text-kej-muted italic text-sm">
                                     Belum ada aktivitas presensi terbaru.
@@ -264,28 +335,6 @@
                         </div>
                     </div>
                     @else
-                    <!-- Admin Quick Stats -->
-                    <div class="grid grid-cols-1 gap-4">
-                        <div class="bg-white border border-kej-border rounded-2xl p-8 shadow-sm">
-                            <h3 class="font-serif text-xl font-black text-kej-navy mb-6">Manajemen Sistem</h3>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <a href="{{ route('admin.index') }}" class="p-5 bg-kej-bg rounded-2xl border border-kej-border hover:border-kej-green transition-all group">
-                                    <div class="w-12 h-12 bg-white rounded-xl shadow-sm grid place-items-center text-kej-navy mb-4 group-hover:bg-kej-green group-hover:text-white transition-all">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-                                    </div>
-                                    <div class="font-bold text-kej-navy">Kelola User</div>
-                                    <div class="text-[10px] text-kej-muted font-bold uppercase mt-1 tracking-wider">Database Terpidana</div>
-                                </a>
-                                <a href="{{ route('pidana.list') }}" class="p-5 bg-kej-bg rounded-2xl border border-kej-border hover:border-kej-green transition-all group">
-                                    <div class="w-12 h-12 bg-white rounded-xl shadow-sm grid place-items-center text-kej-navy mb-4 group-hover:bg-kej-green group-hover:text-white transition-all">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                                    </div>
-                                    <div class="font-bold text-kej-navy">Monitoring</div>
-                                    <div class="text-[10px] text-kej-muted font-bold uppercase mt-1 tracking-wider">Laporan Aktivitas</div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                     @endif
                 </div>
             </div>

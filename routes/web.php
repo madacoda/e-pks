@@ -1,11 +1,15 @@
 <?php
 
 use App\Http\Controllers\AbsenceController;
+use App\Http\Controllers\Admin\PlacementController;
+use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\SupervisorComplaintController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PdfExportController;
 use App\Http\Controllers\SupervisionController;
 use Illuminate\Support\Facades\Route;
 
@@ -16,8 +20,8 @@ Route::get('/regulations', function () {
     return view('regulations');
 })->name('regulations');
 
-Route::get('/complaints/create', [ComplaintController::class, 'create'])->name('complaints.create');
-Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store');
+Route::get('/complaints/create', [ComplaintController::class, 'create'])->name('complaints.create')->middleware('throttle:60,1');
+Route::post('/complaints', [ComplaintController::class, 'store'])->name('complaints.store')->middleware('throttle:30,1');
 
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login']);
@@ -28,7 +32,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/absences', [AbsenceController::class, 'index'])->name('absences.index');
     Route::get('/absences/create', [AbsenceController::class, 'create'])->name('absences.create');
-    Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store');
+    Route::post('/absences', [AbsenceController::class, 'store'])->name('absences.store')->middleware('throttle:3,1440');
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/users', [AdminController::class, 'index'])->name('index');
@@ -45,5 +49,22 @@ Route::middleware('auth')->group(function () {
         // Complaints Management
         Route::get('/complaints', [ComplaintController::class, 'index'])->name('complaints.index');
         Route::put('/complaints/{complaint}', [ComplaintController::class, 'update'])->name('complaints.update');
+
+        // Supervisor Complaints
+        Route::get('/supervisor-complaints', [SupervisorComplaintController::class, 'index'])->name('supervisor-complaints.index');
+        Route::get('/supervisor-complaints/create', [SupervisorComplaintController::class, 'create'])->name('supervisor-complaints.create');
+        Route::post('/supervisor-complaints', [SupervisorComplaintController::class, 'store'])->name('supervisor-complaints.store');
+        Route::delete('/supervisor-complaints/{supervisorComplaint}', [SupervisorComplaintController::class, 'destroy'])->name('supervisor-complaints.destroy');
+
+        // PDF Exports
+        Route::get('/users/{user}/pks02', [PdfExportController::class, 'pks02'])->name('export.pks02');
+        Route::get('/users/{user}/pks03', [PdfExportController::class, 'pks03'])->name('export.pks03');
+
+        // Reports
+        Route::get('/users/{user}/report/monthly', [ReportController::class, 'monthly'])->name('reports.monthly');
+        Route::get('/users/{user}/report/monthly/pdf', [PdfExportController::class, 'monthlyAbsence'])->name('export.monthly');
+
+        // Placements
+        Route::resource('placements', PlacementController::class);
     });
 });

@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Absence;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DevSeeder extends Seeder
@@ -17,9 +16,7 @@ class DevSeeder extends Seeder
         // Absence::where('id', 1)->delete();
         // $absences = Absence::all();
 
-
         // dd($absences);
-
 
     }
 }

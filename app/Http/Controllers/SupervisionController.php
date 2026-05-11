@@ -10,8 +10,12 @@ class SupervisionController extends Controller
 {
     public function index(User $user)
     {
-        if (auth()->user()->role !== 'admin') {
+        if (!in_array(auth()->user()->role, ['admin', 'jaksa_pengawas'])) {
             abort(403);
+        }
+
+        if (auth()->user()->role === 'jaksa_pengawas' && !$user->assignedJaksa->contains(auth()->id())) {
+            abort(403, 'Anda tidak ditugaskan untuk mengawasi terpidana ini.');
         }
 
         $supervisions = $user->supervisions()->latest()->get();
@@ -21,8 +25,12 @@ class SupervisionController extends Controller
 
     public function store(Request $request, User $user)
     {
-        if (auth()->user()->role !== 'admin') {
+        if (!in_array(auth()->user()->role, ['admin', 'jaksa_pengawas'])) {
             abort(403);
+        }
+
+        if (auth()->user()->role === 'jaksa_pengawas' && !$user->assignedJaksa->contains(auth()->id())) {
+            abort(403, 'Anda tidak ditugaskan untuk mengawasi terpidana ini.');
         }
 
         $request->validate([
@@ -31,6 +39,8 @@ class SupervisionController extends Controller
             'notes' => 'nullable|string',
             'behavior_status' => 'nullable|string|max:255',
             'compliance_status' => 'nullable|string|max:255',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i|after_or_equal:start_time',
         ]);
 
         $user->supervisions()->create($request->all());
@@ -40,8 +50,12 @@ class SupervisionController extends Controller
 
     public function update(Request $request, Pks03Supervision $supervision)
     {
-        if (auth()->user()->role !== 'admin') {
+        if (!in_array(auth()->user()->role, ['admin', 'jaksa_pengawas'])) {
             abort(403);
+        }
+
+        if (auth()->user()->role === 'jaksa_pengawas' && !$supervision->user->assignedJaksa->contains(auth()->id())) {
+            abort(403, 'Anda tidak ditugaskan untuk mengawasi terpidana ini.');
         }
 
         $request->validate([
@@ -50,6 +64,8 @@ class SupervisionController extends Controller
             'notes' => 'nullable|string',
             'behavior_status' => 'nullable|string|max:255',
             'compliance_status' => 'nullable|string|max:255',
+            'start_time' => 'nullable|date_format:H:i',
+            'end_time' => 'nullable|date_format:H:i|after_or_equal:start_time',
         ]);
 
         $supervision->update($request->all());
@@ -59,8 +75,12 @@ class SupervisionController extends Controller
 
     public function destroy(Pks03Supervision $supervision)
     {
-        if (auth()->user()->role !== 'admin') {
+        if (!in_array(auth()->user()->role, ['admin', 'jaksa_pengawas'])) {
             abort(403);
+        }
+
+        if (auth()->user()->role === 'jaksa_pengawas' && !$supervision->user->assignedJaksa->contains(auth()->id())) {
+            abort(403, 'Anda tidak ditugaskan untuk mengawasi terpidana ini.');
         }
 
         $supervision->delete();

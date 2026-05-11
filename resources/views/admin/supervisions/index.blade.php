@@ -19,11 +19,24 @@
                 </h1>
                 <p class="text-kej-muted text-xs sm:text-sm mt-1 font-medium">Terpidana: <span class="font-black text-kej-navy">{{ $user->name }}</span> ({{ $user->pks02_case_number ?? 'Belum ada No. Perkara' }})</p>
             </div>
-            <button onclick="document.getElementById('addSupervisionModal').classList.remove('hidden')" class="bg-kej-navy text-white px-6 py-3 rounded-xl font-black text-[11px] tracking-widest uppercase hover:bg-kej-green transition-all shadow-md flex items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                Tambah Pengawasan
-            </button>
+            <div class="flex gap-3">
+                <a href="{{ route('admin.export.pks03', $user) }}" class="bg-white border border-kej-border text-kej-navy px-6 py-3 rounded-xl font-black text-[11px] tracking-widest uppercase hover:bg-kej-bg transition-all shadow-sm flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                    Export PKS-03
+                </a>
+                <button onclick="document.getElementById('addSupervisionModal').classList.remove('hidden')" class="bg-kej-navy text-white px-6 py-3 rounded-xl font-black text-[11px] tracking-widest uppercase hover:bg-kej-green transition-all shadow-md flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Tambah Pengawasan
+                </button>
+            </div>
         </div>
+
+        @if(session('success'))
+        <div class="bg-kej-green/10 border border-kej-green text-kej-green px-4 py-3 rounded-xl mb-6 text-sm font-bold flex items-center gap-2 animate-fade-in">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ session('success') }}
+        </div>
+        @endif
 
         <div class="bg-white border border-kej-border rounded-2xl overflow-hidden shadow-sm">
             <div class="overflow-x-auto">
@@ -41,6 +54,15 @@
                         <tr class="hover:bg-kej-bg/50 transition-colors">
                             <td class="px-6 py-5">
                                 <div class="text-xs font-black text-kej-navy">{{ $supervision->supervision_date->format('d M Y') }}</div>
+                                <div class="text-[10px] font-bold text-kej-muted mt-0.5">
+                                    @if($supervision->start_time)
+                                        {{ \Carbon\Carbon::parse($supervision->start_time)->format('H:i') }} 
+                                        @if($supervision->end_time)
+                                            - {{ \Carbon\Carbon::parse($supervision->end_time)->format('H:i') }}
+                                            <span class="text-kej-navy ml-1">({{ \Carbon\Carbon::parse($supervision->start_time)->diffInMinutes(\Carbon\Carbon::parse($supervision->end_time)) }} mnt)</span>
+                                        @endif
+                                    @endif
+                                </div>
                                 <div class="inline-block mt-1 px-2 py-0.5 bg-kej-navy/10 rounded text-[9px] font-bold text-kej-navy uppercase">{{ $supervision->supervision_type }}</div>
                             </td>
                             <td class="px-6 py-5">
@@ -80,7 +102,7 @@
 {{-- Modal Add Supervision --}}
 <div id="addSupervisionModal" class="fixed inset-0 z-[100] hidden">
     <div class="absolute inset-0 bg-kej-navy/50 backdrop-blur-sm" onclick="document.getElementById('addSupervisionModal').classList.add('hidden')"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] bg-white rounded-2xl shadow-2xl p-6 sm:p-8 animate-fade-in">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-8 animate-fade-in">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-lg font-black text-kej-navy uppercase tracking-tight">Tambah Pengawasan</h3>
             <button onclick="document.getElementById('addSupervisionModal').classList.add('hidden')" class="text-kej-muted hover:text-kej-navy">
@@ -102,6 +124,16 @@
                         <option value="Insidentil">Insidentil</option>
                         <option value="Evaluasi">Evaluasi</option>
                     </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="start_time" class="block text-[10px] font-bold text-kej-navy uppercase tracking-widest mb-1.5">Waktu Mulai</label>
+                    <input type="time" name="start_time" class="w-full px-4 py-2.5 bg-kej-bg border border-kej-border rounded-xl text-xs focus:outline-none focus:border-kej-green font-semibold">
+                </div>
+                <div>
+                    <label for="end_time" class="block text-[10px] font-bold text-kej-navy uppercase tracking-widest mb-1.5">Waktu Selesai</label>
+                    <input type="time" name="end_time" class="w-full px-4 py-2.5 bg-kej-bg border border-kej-border rounded-xl text-xs focus:outline-none focus:border-kej-green font-semibold">
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -136,7 +168,7 @@
 {{-- Modal Edit Supervision --}}
 <div id="editSupervisionModal" class="fixed inset-0 z-[100] hidden">
     <div class="absolute inset-0 bg-kej-navy/50 backdrop-blur-sm" onclick="document.getElementById('editSupervisionModal').classList.add('hidden')"></div>
-    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-[600px] bg-white rounded-2xl shadow-2xl p-6 sm:p-8 animate-fade-in">
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[calc(100%-2rem)] max-w-md bg-white rounded-2xl shadow-2xl p-6 sm:p-8 animate-fade-in">
         <div class="flex justify-between items-center mb-6">
             <h3 class="text-lg font-black text-kej-navy uppercase tracking-tight">Edit Pengawasan</h3>
             <button onclick="document.getElementById('editSupervisionModal').classList.add('hidden')" class="text-kej-muted hover:text-kej-navy">
@@ -159,6 +191,16 @@
                         <option value="Insidentil">Insidentil</option>
                         <option value="Evaluasi">Evaluasi</option>
                     </select>
+                </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-[10px] font-bold text-kej-navy uppercase tracking-widest mb-1.5">Waktu Mulai</label>
+                    <input type="time" id="edit_start_time" name="start_time" class="w-full px-4 py-2.5 bg-kej-bg border border-kej-border rounded-xl text-xs focus:outline-none focus:border-kej-green font-semibold">
+                </div>
+                <div>
+                    <label class="block text-[10px] font-bold text-kej-navy uppercase tracking-widest mb-1.5">Waktu Selesai</label>
+                    <input type="time" id="edit_end_time" name="end_time" class="w-full px-4 py-2.5 bg-kej-bg border border-kej-border rounded-xl text-xs focus:outline-none focus:border-kej-green font-semibold">
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -202,6 +244,8 @@
         
         document.getElementById('edit_supervision_date').value = dateStr;
         document.getElementById('edit_supervision_type').value = supervision.supervision_type;
+        document.getElementById('edit_start_time').value = supervision.start_time ? supervision.start_time.substring(0, 5) : '';
+        document.getElementById('edit_end_time').value = supervision.end_time ? supervision.end_time.substring(0, 5) : '';
         document.getElementById('edit_behavior_status').value = supervision.behavior_status;
         document.getElementById('edit_compliance_status').value = supervision.compliance_status;
         document.getElementById('edit_notes').value = supervision.notes || '';

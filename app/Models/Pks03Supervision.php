@@ -13,6 +13,8 @@ class Pks03Supervision extends Model
         'notes',
         'behavior_status',
         'compliance_status',
+        'start_time',
+        'end_time',
     ];
 
     protected $casts = [

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Placement;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,6 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         $pidanas = User::where('role', 'pidana')->withCount('absences')->latest()->take(3)->get();
+
         return view('index', compact('pidanas'));
     }
 
@@ -18,7 +20,7 @@ class HomeController extends Controller
         $query = User::where('role', 'pidana')->withCount('absences')->with('placement');
 
         if ($request->filled('search')) {
-            $query->where('name', 'ilike', '%' . $request->search . '%');
+            $query->where('name', 'ilike', '%'.$request->search.'%');
         }
 
         if ($request->filled('placement_id')) {
@@ -26,7 +28,8 @@ class HomeController extends Controller
         }
 
         $pidanas = $query->get();
-        $placements = \App\Models\Placement::all();
+        $placements = Placement::all();
+
         return view('pidana.index', compact('pidanas', 'placements'));
     }
 
@@ -35,8 +38,9 @@ class HomeController extends Controller
         if ($user->role !== 'pidana') {
             abort(404);
         }
-        
+
         $absences = $user->absences()->latest()->get();
+
         return view('pidana.show', compact('user', 'absences'));
     }
 }
