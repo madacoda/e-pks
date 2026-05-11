@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Location;
 use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -29,7 +30,11 @@ class Pks03AssessmentController extends Controller implements HasMiddleware
     {
         $assessment = $user->pks03Assessment()->with('institutions')->first();
 
-        return view('admin.users.pks03-assessment', compact('user', 'assessment'));
+        $locations = Location::where('placement_id', $user->placement_id)
+            ->select('name', 'address', 'phone', 'pic_name')
+            ->get();
+
+        return view('admin.users.pks03-assessment', compact('user', 'assessment', 'locations'));
     }
 
     public function store(Request $request, User $user)

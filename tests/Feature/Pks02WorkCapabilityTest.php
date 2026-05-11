@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Placement;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,10 +22,11 @@ it('can update work capability json fields', function () {
         'name' => 'Terpidana',
         'email' => 'terpidana@example.com',
         'role' => 'pidana',
+        'placement_id' => Placement::factory()->create()->id,
         'pks02_work_capability' => $workData,
     ];
 
-    $this->actingAs($this->admin)
+    $response = $this->actingAs($this->admin)
         ->put(route('admin.update', $this->pidana), $data)
         ->assertRedirect();
 

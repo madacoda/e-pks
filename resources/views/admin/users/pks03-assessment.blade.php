@@ -23,10 +23,35 @@
             @endif
         </div>
 
+        @if($errors->any())
+        <div class="bg-red-50 text-red-800 border border-red-200 rounded-xl p-4 mb-6 text-sm">
+            <div class="font-bold mb-2 flex items-center gap-2">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Terdapat kesalahan dalam pengisian form:
+            </div>
+            <ul class="list-disc pl-5 space-y-1">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+
         @if(session('success'))
-        <div class="bg-green-50 text-green-800 border border-green-200 rounded-xl p-4 mb-6 text-sm flex items-start gap-3">
-            <svg class="w-5 h-5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-            <div>{{ session('success') }}</div>
+        <div id="successModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4">
+            <div class="absolute inset-0 bg-kej-navy/60 backdrop-blur-sm" onclick="document.getElementById('successModal').remove()"></div>
+            <div class="relative bg-white rounded-[24px] shadow-2xl w-[90vw] max-w-[340px] p-6 text-center animate-fade-in transform transition-all">
+                <div class="w-16 h-16 bg-kej-green/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <svg class="text-kej-green" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                </div>
+                <h3 class="text-lg font-black text-kej-navy mb-2">Berhasil Disimpan</h3>
+                <p class="text-[13px] text-kej-muted font-medium mb-6 leading-relaxed">
+                    {{ session('success') }}
+                </p>
+                <button onclick="document.getElementById('successModal').remove()" class="w-full bg-kej-navy text-white py-3.5 rounded-xl font-black text-xs tracking-widest uppercase hover:bg-kej-green transition-colors shadow-md">
+                    Tutup
+                </button>
+            </div>
         </div>
         @endif
 
@@ -82,7 +107,12 @@
                                         <tr class="border-b border-kej-border/50 hover:bg-kej-bg/30 transition-colors">
                                             <td class="p-3 text-sm text-kej-navy text-center" x-text="index + 1"></td>
                                             <td class="p-2">
-                                                <input type="text" x-model="inst.institution_name" :name="`institutions[${index}][institution_name]`" required class="w-full bg-white border-kej-border rounded text-xs px-3 py-2">
+                                                <select x-model="inst.institution_name" @change="updateFromLocation($event.target.value, index)" :name="`institutions[${index}][institution_name]`" required class="w-full bg-white border-kej-border rounded text-xs px-3 py-2">
+                                                    <option value="">Pilih Lembaga / Lokasi Baksos...</option>
+                                                    @foreach($locations as $l)
+                                                        <option value="{{ $l->name }}">{{ $l->name }}</option>
+                                                    @endforeach
+                                                </select>
                                             </td>
                                             <td class="p-2">
                                                 <select x-model="inst.service_type" :name="`institutions[${index}][service_type]`" required class="w-full bg-white border-kej-border rounded text-xs px-3 py-2">
@@ -192,7 +222,8 @@
 <script>
     document.addEventListener('alpine:init', () => {
         Alpine.data('institutionRepeater', () => ({
-            institutions: {!! old('institutions', $assessment ? $assessment->institutions->map(function($i) { return ['institution_name' => $i->institution_name, 'service_type' => $i->service_type, 'address_contact' => $i->address_contact, 'is_available' => $i->is_available]; })->toJson() : '[]') !!},
+            locations: {!! $locations->toJson() !!},
+            institutions: {!! json_encode(old('institutions', $assessment ? $assessment->institutions->map(function($i) { return ['institution_name' => $i->institution_name, 'service_type' => $i->service_type, 'address_contact' => $i->address_contact, 'is_available' => (bool)$i->is_available]; })->toArray() : [])) !!},
             addInstitution() {
                 this.institutions.push({
                     institution_name: '',
@@ -203,6 +234,19 @@
             },
             removeInstitution(index) {
                 this.institutions.splice(index, 1);
+            },
+            updateFromLocation(name, index) {
+                const location = this.locations.find(l => l.name === name);
+                if (location) {
+                    let contactStr = location.address || '';
+                    if (location.phone) {
+                        contactStr += ' - Telp: ' + location.phone;
+                    }
+                    if (location.pic_name) {
+                        contactStr += ' (PIC: ' + location.pic_name + ')';
+                    }
+                    this.institutions[index].address_contact = contactStr;
+                }
             }
         }));
     });

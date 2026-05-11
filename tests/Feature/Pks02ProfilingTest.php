@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Placement;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,6 +15,7 @@ test('admin can update user with pks02 profiling data', function () {
             'name' => 'Updated Name',
             'email' => $pidana->email,
             'role' => 'pidana',
+            'placement_id' => Placement::factory()->create()->id,
             'pks02_prosecutor_name' => 'Jaksa Budi',
             'pks02_case_number' => 'PDM-123/JKT/2026',
             'pks02_opinion_analysis' => 'Analisa hukum mendalam.',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Placement;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -15,7 +16,8 @@ test('admin can assign jaksa to pidana', function () {
             'name' => $pidana->name,
             'email' => $pidana->email,
             'role' => 'pidana',
-            'jaksa_ids' => [$jaksa->id]
+            'placement_id' => Placement::factory()->create()->id,
+            'jaksa_ids' => [$jaksa->id],
         ]);
 
     $response->assertStatus(302);

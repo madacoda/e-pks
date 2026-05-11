@@ -37,7 +37,7 @@ class AbsenceController extends Controller
         }
 
         if ($request->filled('location')) {
-            $query->where('location_name', 'like', '%' . $request->location . '%');
+            $query->where('location_name', 'like', '%'.$request->location.'%');
         }
 
         if ($request->filled('flagged')) {
@@ -76,12 +76,12 @@ class AbsenceController extends Controller
         $user = Auth::user();
         $isFlagged = false;
 
-        if ($user->placement && $user->placement->latitude && $user->placement->longitude) {
+        if ($user->location && $user->location->latitude && $user->location->longitude) {
             $distance = $this->calculateDistance(
                 $request->latitude,
                 $request->longitude,
-                $user->placement->latitude,
-                $user->placement->longitude
+                $user->location->latitude,
+                $user->location->longitude
             );
 
             if ($distance > 500) {
@@ -99,8 +99,8 @@ class AbsenceController extends Controller
             'is_flagged' => $isFlagged,
         ]);
 
-        $message = $isFlagged 
-            ? 'Presensi berhasil disimpan, namun lokasi Anda terdeteksi di luar radius Satker.' 
+        $message = $isFlagged
+            ? 'Presensi berhasil disimpan, namun lokasi Anda terdeteksi di luar radius Satker.'
             : 'Presensi berhasil disimpan.';
 
         return redirect()->route('dashboard')->with('success', $message);
@@ -115,6 +115,7 @@ class AbsenceController extends Controller
             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
             sin($dLon / 2) * sin($dLon / 2);
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
+
         return $earthRadius * $c;
     }
 }

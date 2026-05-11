@@ -18,7 +18,7 @@ class AdminController extends Controller implements HasMiddleware
     {
         return [
             function ($request, $next) {
-                if (!in_array(Auth::user()->role, ['admin', 'jaksa_pengawas'])) {
+                if (! in_array(Auth::user()->role, ['admin', 'jaksa_pengawas'])) {
                     abort(403, 'Unauthorized action.');
                 }
 
@@ -73,18 +73,19 @@ class AdminController extends Controller implements HasMiddleware
 
     public function edit(User $user)
     {
-        if (Auth::user()->role === 'jaksa_pengawas' && !$user->assignedJaksa->contains(Auth::id())) {
+        if (Auth::user()->role === 'jaksa_pengawas' && ! $user->assignedJaksa->contains(Auth::id())) {
             abort(403, 'Anda hanya dapat mengelola terpidana yang ditugaskan kepada Anda.');
         }
 
         $placements = Placement::all();
         $jaksas = User::whereIn('role', ['admin', 'jaksa_pengawas'])->get();
+
         return view('admin.edit', compact('user', 'placements', 'jaksas'));
     }
 
     public function update(Request $request, User $user)
     {
-        if (Auth::user()->role === 'jaksa_pengawas' && !$user->assignedJaksa->contains(Auth::id())) {
+        if (Auth::user()->role === 'jaksa_pengawas' && ! $user->assignedJaksa->contains(Auth::id())) {
             abort(403, 'Anda hanya dapat mengelola terpidana yang ditugaskan kepada Anda.');
         }
         $validated = $request->validate([
@@ -105,7 +106,7 @@ class AdminController extends Controller implements HasMiddleware
             'jenis_tindak_pidana' => 'nullable|string|max:255',
             'sentence' => 'nullable|string|max:255',
             'sentence_hours' => 'nullable|integer|min:0',
-            'placement_id' => 'nullable|exists:placements,id',
+            'placement_id' => 'required|exists:placements,id',
             'nationality' => 'nullable|string|max:255',
             'marital_status' => 'nullable|in:belum_menikah,menikah,cerai',
             'spouse_name' => 'nullable|string|max:255',

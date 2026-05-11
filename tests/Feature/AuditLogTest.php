@@ -1,7 +1,8 @@
 <?php
 
-use App\Models\User;
 use App\Models\AuditLog;
+use App\Models\Placement;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -14,7 +15,8 @@ test('admin action creates audit record', function () {
         ->put("/admin/users/{$user->id}", [
             'name' => 'Changed Name',
             'email' => $user->email,
-            'role' => 'pidana'
+            'role' => 'pidana',
+            'placement_id' => Placement::factory()->create()->id,
         ]);
 
     $response->assertStatus(302);

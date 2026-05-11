@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Placement;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -14,6 +15,7 @@ test('admin can update legal details and sentence hours', function () {
             'name' => 'Updated Name',
             'email' => 'updated@example.com',
             'role' => 'pidana',
+            'placement_id' => Placement::factory()->create()->id,
             'pasal' => 'Pasal 362',
             'sub_pasal' => 'Ayat 1',
             'jenis_tindak_pidana' => 'Pencurian',

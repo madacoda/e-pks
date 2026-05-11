@@ -13,7 +13,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 #[Fillable([
-    'name', 'national_id', 'email', 'password', 'role', 'date_of_birth', 'place_of_birth', 'gender', 'religion', 'education', 'occupation', 'address', 'crime', 'pasal', 'sub_pasal', 'jenis_tindak_pidana', 'sentence', 'sentence_hours', 'avatar', 'placement_id',
+    'name', 'national_id', 'email', 'password', 'role', 'date_of_birth', 'place_of_birth', 'gender', 'religion', 'education', 'occupation', 'address', 'crime', 'pasal', 'sub_pasal', 'jenis_tindak_pidana', 'sentence', 'sentence_hours', 'avatar', 'placement_id', 'location_id',
     'pks02_prosecutor_name', 'pks02_case_number', 'pks02_opinion_analysis', 'pks02_opinion_recommendation', 'pks02_opinion_conclusion',
     'nationality', 'marital_status', 'dependents_count', 'spouse_name', 'children_count', 'ktp_address', 'phone_number',
     'pks02_background', 'pks02_family_profile', 'pks02_environment', 'pks02_daily_life', 'pks02_work_capability', 'pks02_profiling_meta',
@@ -90,5 +90,10 @@ class User extends Authenticatable
     public function pks03Assessment()
     {
         return $this->hasOne(Pks03SupportAssessment::class, 'user_id');
+    }
+
+    public function location()
+    {
+        return $this->belongsTo(Location::class);
     }
 }

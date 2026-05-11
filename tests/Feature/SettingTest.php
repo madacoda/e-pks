@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use App\Models\Setting;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 uses(RefreshDatabase::class);
@@ -18,18 +18,18 @@ test('non-admin cannot view settings page', function () {
 
 test('admin can update settings', function () {
     $admin = User::factory()->create(['role' => 'admin']);
-    
+
     $this->actingAs($admin)->post('/admin/settings', [
         'regulations_kewajiban' => "Wajib 1\nWajib 2",
         'regulations_larangan' => "Larang 1\nLarang 2",
-        'regulations_monitoring' => "Test monitoring",
+        'regulations_monitoring' => 'Test monitoring',
     ])->assertRedirect(route('admin.settings.index'));
 
     $this->assertEquals(
         json_encode(['Wajib 1', 'Wajib 2']),
         Setting::get('regulations_kewajiban')
     );
-    
+
     $this->assertEquals(
         'Test monitoring',
         Setting::get('regulations_monitoring')

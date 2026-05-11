@@ -191,8 +191,8 @@
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="placement_id" class="block text-[10px] font-bold text-kej-navy uppercase tracking-widest mb-2">Satker Yang Menangani</label>
-                            <select id="placement_id" name="placement_id"
+                            <label for="placement_id" class="block text-[10px] font-bold text-kej-navy uppercase tracking-widest mb-2">Satker Yang Menangani <span class="text-red-500">*</span></label>
+                            <select id="placement_id" name="placement_id" required
                                 class="w-full px-4 py-3 bg-kej-bg border border-kej-border rounded-xl text-sm focus:outline-none focus:border-kej-green transition-all font-semibold appearance-none">
                                 <option value="">-- Pilih Satker --</option>
                                 @foreach($placements as $placement)

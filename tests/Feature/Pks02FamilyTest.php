@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Placement;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
@@ -21,6 +22,7 @@ it('can update family json fields', function () {
         'name' => 'Terpidana',
         'email' => 'terpidana@example.com',
         'role' => 'pidana',
+        'placement_id' => Placement::factory()->create()->id,
         'pks02_family_profile' => $familyData,
     ];
 
